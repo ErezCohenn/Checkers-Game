@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Random = System.Random;
 
-namespace EnglishCheckers
+namespace EnglishCheckersLogic
 {
     public class Game
     {

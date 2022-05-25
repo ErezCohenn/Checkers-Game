@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EnglishCheckers
+namespace EnglishCheckersLogic
 {
     public class Pawn
     {
