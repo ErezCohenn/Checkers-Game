@@ -1,4 +1,4 @@
-﻿namespace EnglishCheckers
+﻿namespace EnglishCheckersLogic
 {
     public class Board
     {
