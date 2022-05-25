@@ -30,7 +30,6 @@
         {
             this.player1Score = new System.Windows.Forms.Label();
             this.player2Score = new System.Windows.Forms.Label();
-            this.pictureBoxMatrix = new System.Windows.Forms.PictureBox[6, 6];
             this.SuspendLayout();
             // 
             // player1Score
@@ -50,32 +49,20 @@
             this.player2Score.Size = new System.Drawing.Size(64, 17);
             this.player2Score.TabIndex = 1;
             this.player2Score.Text = "Player 2:";
-            //
-            // pictureBoxMatrix
-            //
-            initializePictureBoxMatrix();
             // 
             // FormGame
             // 
-            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.ClientSize = new System.Drawing.Size(249, 236);
             this.Controls.Add(this.player2Score);
             this.Controls.Add(this.player1Score);
             this.Name = "FormGame";
+            this.Load += new System.EventHandler(this.FormGame_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
-
+            m_FormGameSettings = new FormGameSettings();
+            m_FormGameSettings.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormGameSettings_FormClosed);
         }
-
-        private void initializePictureBoxMatrix()
-        {
-
-        }
-
         #endregion
-
-        private System.Windows.Forms.PictureBox[,] pictureBoxMatrix;
-        private System.Windows.Forms.Label player1Score;
-        private System.Windows.Forms.Label player2Score;
     }
 }

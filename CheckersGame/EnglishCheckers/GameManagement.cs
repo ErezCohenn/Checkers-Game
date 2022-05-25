@@ -1,4 +1,6 @@
 ﻿using EnglishCheckersLogic;
+using System;
+
 namespace EnglishCheckersWinUI
 {
     public class GameManagement
@@ -17,16 +19,21 @@ namespace EnglishCheckersWinUI
         {
             bool wantToQuit = false;
 
+            r_FormGame.GameDetailsUpdated += r_FormGame_GameDetailsUpdated;
             r_FormGame.ShowDialog();
-            //r_EnglishCheckersLogic.InitializeGameDetails(r_FormGameSettings.XPlayerName, r_FormGameSettings.OPlayerName, r_FormGameSettings.BoardSize, r_FormGameSettings.PlayerOType);
             do
             {
                 r_EnglishCheckersLogic.InitializeSession();
-                //r_UserInterface.GameDetails.InitializeSessionDetails();
                 //playGameSession();
                 //wantToQuit = r_UserInterface.IsPlayerWantToEndTheGame();
             }
             while (!wantToQuit);
+        }
+
+        private void r_FormGame_GameDetailsUpdated(object sender, EventArgs e)
+        {
+            EventGameDetailsArgs gameDetails = e as EventGameDetailsArgs;
+            r_EnglishCheckersLogic.InitializeGameDetails(gameDetails.PlayerXName, gameDetails.PlayerOName, gameDetails.BoardSize, gameDetails.PlayerOType);
         }
 
         /*private void playGameSession()

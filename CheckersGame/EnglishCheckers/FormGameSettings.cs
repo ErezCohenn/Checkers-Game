@@ -1,45 +1,26 @@
-﻿using System;
+﻿using EnglishCheckersLogic;
+using System;
 using System.Windows.Forms;
 
-namespace EnglishCheckersLogic
+namespace EnglishCheckersWinUI
 {
     public partial class FormGameSettings : Form
     {
+        private System.Windows.Forms.Label labelBoardSize;
+        private System.Windows.Forms.Label labelPlayers;
+        private System.Windows.Forms.Label labelPlayer1;
+        private System.Windows.Forms.TextBox textButtenXPlayerName;
+        private System.Windows.Forms.TextBox textButtonOPlayerName;
+        private System.Windows.Forms.CheckBox checkBoxButtonPlayerTypeCheck;
+        private System.Windows.Forms.RadioButton radioButtonSmallBoardSize;
+        private System.Windows.Forms.RadioButton radioButtonMediumBoardSize;
+        private System.Windows.Forms.RadioButton radioButtonLargeBoardSize;
+        private System.Windows.Forms.Button buttonDone;
 
         private const string k_ComputerLabel = "[Computer]";
         public FormGameSettings()
         {
             InitializeComponent();
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormGameSettings_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void playerTypeCheckBoxButton_CheckedChanged(object sender, EventArgs e)
@@ -48,13 +29,13 @@ namespace EnglishCheckersLogic
 
             if (playerTypeCheckBox.Checked)
             {
-                oPlayerName.Enabled = true;
-                oPlayerName.Text = string.Empty;
+                textButtonOPlayerName.Enabled = true;
+                textButtonOPlayerName.Text = string.Empty;
             }
             else
             {
-                oPlayerName.Enabled = false;
-                oPlayerName.Text = k_ComputerLabel;
+                textButtonOPlayerName.Enabled = false;
+                textButtonOPlayerName.Text = k_ComputerLabel;
             }
         }
 
@@ -62,7 +43,7 @@ namespace EnglishCheckersLogic
         {
             get
             {
-                return xPlayerName.Text;
+                return textButtenXPlayerName.Text;
             }
 
         }
@@ -71,7 +52,7 @@ namespace EnglishCheckersLogic
         {
             get
             {
-                return oPlayerName.Text;
+                return textButtonOPlayerName.Text;
             }
         }
 
@@ -79,7 +60,7 @@ namespace EnglishCheckersLogic
         {
             get
             {
-                return playerTypeCheckBoxButton.Checked == true ? Player.ePlayerType.Human : Player.ePlayerType.Computer;
+                return checkBoxButtonPlayerTypeCheck.Checked == true ? Player.ePlayerType.Human : Player.ePlayerType.Computer;
             }
         }
 
@@ -90,11 +71,11 @@ namespace EnglishCheckersLogic
                 Board.eBoradSize boardSize = Board.eBoradSize.Medium;
 
 
-                if (smallBoardSizeRadioButton.Checked)
+                if (radioButtonSmallBoardSize.Checked)
                 {
                     boardSize = Board.eBoradSize.Small;
                 }
-                else if (mediumBoardSizeRadioButton.Checked)
+                else if (radioButtonMediumBoardSize.Checked)
                 {
                     boardSize = Board.eBoradSize.Medium;
                 }
@@ -104,6 +85,18 @@ namespace EnglishCheckersLogic
                 }
 
                 return boardSize;
+            }
+        }
+
+        private void buttonDone_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textButtenXPlayerName.Text) || string.IsNullOrEmpty(textButtonOPlayerName.Text))
+            {
+                MessageBox.Show("Error: A player name cannot be empty!");
+            }
+            else
+            {
+                this.Close();
             }
         }
     }
