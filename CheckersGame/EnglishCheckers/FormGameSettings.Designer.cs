@@ -164,7 +164,8 @@ namespace EnglishCheckersWinUI
             this.MinimizeBox = false;
             this.Name = "FormGameSettings";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Game Settings";            
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Game Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 
