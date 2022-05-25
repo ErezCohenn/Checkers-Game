@@ -17,17 +17,31 @@ namespace EnglishCheckersWinUI
 
         public void RunGame()
         {
-            bool wantToQuit = false;
-
             r_FormGame.GameDetailsUpdated += r_FormGame_GameDetailsUpdated;
+            r_FormGame.YesNoMessageBoxClicked += r_FormGame_YesNoMessageBoxClicked;
+            r_EnglishCheckersLogic.GameFinshed += r_EnglishCheckersLogic_GameFinished;
             r_FormGame.ShowDialog();
-            do
+        }
+
+        private void r_FormGame_YesNoMessageBoxClicked(object sender, EventArgs e)
+        {
+            YesNoMessageBoxEventArgs yesNoMessageBoxEventArgs = e as YesNoMessageBoxEventArgs;
+
+            if (yesNoMessageBoxEventArgs.IsPressedYesInMessageBox)
             {
                 r_EnglishCheckersLogic.InitializeSession();
-                //playGameSession();
-                //wantToQuit = r_UserInterface.IsPlayerWantToEndTheGame();
             }
-            while (!wantToQuit);
+            else
+            {
+                r_FormGame.Close();
+            }
+        }
+
+        private void r_EnglishCheckersLogic_GameFinished(object sender, EventArgs e)
+        {
+            Game gameLogic = sender as Game;
+
+            r_FormGame.ContinuePlayingMessageBox(gameLogic);
         }
 
         private void r_FormGame_GameDetailsUpdated(object sender, EventArgs e)

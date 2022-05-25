@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Random = System.Random;
 
 namespace EnglishCheckersLogic
@@ -19,6 +20,7 @@ namespace EnglishCheckersLogic
         private Player m_PreviousPlayer;
         private bool m_EatingSequence;
         private eSessionFinishType m_FinishReason;
+        public EventHandler GameFinshed;
 
         public Game()
         {
@@ -36,6 +38,7 @@ namespace EnglishCheckersLogic
             m_PlayerO = new Player(i_PlayerOType, i_PlayerOName, Player.ePlayerSign.OSign, i_BoardSize);
             m_PlayerX = new Player(Player.ePlayerType.Human, i_PlayerXName, Player.ePlayerSign.XSign, i_BoardSize);
             m_Board = new Board(i_BoardSize);
+            InitializeSession();
         }
 
         public void InitializeSession()
@@ -76,6 +79,16 @@ namespace EnglishCheckersLogic
             {
                 m_FinishReason = eSessionFinishType.Won;
                 m_PreviousPlayer.Score += m_PreviousPlayer.GetScore() - m_CurrentPlayer.GetScore();
+            }
+
+            OnGameFinished();
+        }
+
+        private void OnGameFinished()
+        {
+            if (GameFinshed != null)
+            {
+                GameFinshed.Invoke(this, null);
             }
         }
 
