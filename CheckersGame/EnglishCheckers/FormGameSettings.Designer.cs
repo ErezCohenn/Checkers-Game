@@ -1,5 +1,5 @@
 ﻿
-namespace EnglishCheckersLogic
+namespace EnglishCheckersWinUI
 {
     partial class FormGameSettings
     {
@@ -29,122 +29,119 @@ namespace EnglishCheckersLogic
         /// </summary>
         private void InitializeComponent()
         {
-            this.boardSizeLabel = new System.Windows.Forms.Label();
-            this.PlayersLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.xPlayerName = new System.Windows.Forms.TextBox();
-            this.oPlayerName = new System.Windows.Forms.TextBox();
-            this.playerTypeCheckBoxButton = new System.Windows.Forms.CheckBox();
-            this.smallBoardSizeRadioButton = new System.Windows.Forms.RadioButton();
-            this.mediumBoardSizeRadioButton = new System.Windows.Forms.RadioButton();
-            this.largeBoardSizeRadioButton = new System.Windows.Forms.RadioButton();
-            this.doneButton = new System.Windows.Forms.Button();
+            this.labelBoardSize = new System.Windows.Forms.Label();
+            this.labelPlayers = new System.Windows.Forms.Label();
+            this.labelPlayer1 = new System.Windows.Forms.Label();
+            this.textButtenXPlayerName = new System.Windows.Forms.TextBox();
+            this.textButtonOPlayerName = new System.Windows.Forms.TextBox();
+            this.checkBoxButtonPlayerTypeCheck = new System.Windows.Forms.CheckBox();
+            this.radioButtonSmallBoardSize = new System.Windows.Forms.RadioButton();
+            this.radioButtonMediumBoardSize = new System.Windows.Forms.RadioButton();
+            this.radioButtonLargeBoardSize = new System.Windows.Forms.RadioButton();
+            this.buttonDone = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // boardSizeLabel
+            // labelBoardSize
             // 
-            this.boardSizeLabel.AutoSize = true;
-            this.boardSizeLabel.Location = new System.Drawing.Point(12, 9);
-            this.boardSizeLabel.Name = "boardSizeLabel";
-            this.boardSizeLabel.Size = new System.Drawing.Size(81, 17);
-            this.boardSizeLabel.TabIndex = 0;
-            this.boardSizeLabel.Text = "Board Size:";
+            this.labelBoardSize.AutoSize = true;
+            this.labelBoardSize.Location = new System.Drawing.Point(12, 9);
+            this.labelBoardSize.Name = "labelBoardSize";
+            this.labelBoardSize.Size = new System.Drawing.Size(81, 17);
+            this.labelBoardSize.TabIndex = 0;
+            this.labelBoardSize.Text = "Board Size:";
             // 
-            // PlayersLabel
+            // labelPlayers
             // 
-            this.PlayersLabel.AutoSize = true;
-            this.PlayersLabel.Location = new System.Drawing.Point(12, 83);
-            this.PlayersLabel.Name = "PlayersLabel";
-            this.PlayersLabel.Size = new System.Drawing.Size(59, 17);
-            this.PlayersLabel.TabIndex = 4;
-            this.PlayersLabel.Text = "Players:";
-            this.PlayersLabel.Click += new System.EventHandler(this.label1_Click);
+            this.labelPlayers.AutoSize = true;
+            this.labelPlayers.Location = new System.Drawing.Point(12, 83);
+            this.labelPlayers.Name = "labelPlayers";
+            this.labelPlayers.Size = new System.Drawing.Size(59, 17);
+            this.labelPlayers.TabIndex = 4;
+            this.labelPlayers.Text = "Players:";
             // 
-            // label1
+            // labelPlayer1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 112);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 17);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Player 1:";
+            this.labelPlayer1.AutoSize = true;
+            this.labelPlayer1.Location = new System.Drawing.Point(27, 112);
+            this.labelPlayer1.Name = "labelPlayer1";
+            this.labelPlayer1.Size = new System.Drawing.Size(64, 17);
+            this.labelPlayer1.TabIndex = 5;
+            this.labelPlayer1.Text = "Player 1:";
             // 
-            // xPlayerName
+            // textButtenXPlayerName
             // 
-            this.xPlayerName.Location = new System.Drawing.Point(118, 112);
-            this.xPlayerName.Name = "xPlayerName";
-            this.xPlayerName.Size = new System.Drawing.Size(175, 22);
-            this.xPlayerName.TabIndex = 7;
+            this.textButtenXPlayerName.Location = new System.Drawing.Point(118, 112);
+            this.textButtenXPlayerName.Name = "textButtenXPlayerName";
+            this.textButtenXPlayerName.Size = new System.Drawing.Size(175, 22);
+            this.textButtenXPlayerName.TabIndex = 7;
             // 
-            // oPlayerName
+            // textButtonOPlayerName
             // 
-            this.oPlayerName.Enabled = false;
-            this.oPlayerName.Location = new System.Drawing.Point(118, 148);
-            this.oPlayerName.Name = "oPlayerName";
-            this.oPlayerName.Size = new System.Drawing.Size(175, 22);
-            this.oPlayerName.TabIndex = 8;
-            this.oPlayerName.Text = "[Computer]";
-            this.oPlayerName.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.textButtonOPlayerName.Enabled = false;
+            this.textButtonOPlayerName.Location = new System.Drawing.Point(118, 148);
+            this.textButtonOPlayerName.Name = "textButtonOPlayerName";
+            this.textButtonOPlayerName.Size = new System.Drawing.Size(175, 22);
+            this.textButtonOPlayerName.TabIndex = 8;
+            this.textButtonOPlayerName.Text = "[Computer]";
             // 
-            // playerTypeCheckBoxButton
+            // checkBoxButtonPlayerTypeCheck
             // 
-            this.playerTypeCheckBoxButton.AutoSize = true;
-            this.playerTypeCheckBoxButton.Location = new System.Drawing.Point(30, 149);
-            this.playerTypeCheckBoxButton.Name = "playerTypeCheckBoxButton";
-            this.playerTypeCheckBoxButton.Size = new System.Drawing.Size(86, 21);
-            this.playerTypeCheckBoxButton.TabIndex = 9;
-            this.playerTypeCheckBoxButton.Text = "Player 2:";
-            this.playerTypeCheckBoxButton.UseVisualStyleBackColor = true;
-            this.playerTypeCheckBoxButton.CheckedChanged += new System.EventHandler(this.playerTypeCheckBoxButton_CheckedChanged);
+            this.checkBoxButtonPlayerTypeCheck.AutoSize = true;
+            this.checkBoxButtonPlayerTypeCheck.Location = new System.Drawing.Point(30, 149);
+            this.checkBoxButtonPlayerTypeCheck.Name = "checkBoxButtonPlayerTypeCheck";
+            this.checkBoxButtonPlayerTypeCheck.Size = new System.Drawing.Size(86, 21);
+            this.checkBoxButtonPlayerTypeCheck.TabIndex = 9;
+            this.checkBoxButtonPlayerTypeCheck.Text = "Player 2:";
+            this.checkBoxButtonPlayerTypeCheck.UseVisualStyleBackColor = true;
+            this.checkBoxButtonPlayerTypeCheck.CheckedChanged += new System.EventHandler(this.playerTypeCheckBoxButton_CheckedChanged);
             // 
-            // smallBoardSizeRadioButton
+            // radioButtonSmallBoardSize
             // 
-            this.smallBoardSizeRadioButton.AutoSize = true;
-            this.smallBoardSizeRadioButton.Location = new System.Drawing.Point(34, 46);
-            this.smallBoardSizeRadioButton.Name = "smallBoardSizeRadioButton";
-            this.smallBoardSizeRadioButton.Size = new System.Drawing.Size(59, 21);
-            this.smallBoardSizeRadioButton.TabIndex = 10;
-            this.smallBoardSizeRadioButton.TabStop = true;
-            this.smallBoardSizeRadioButton.Text = "6 x 6";
-            this.smallBoardSizeRadioButton.UseVisualStyleBackColor = true;
-            this.smallBoardSizeRadioButton.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.radioButtonSmallBoardSize.AutoSize = true;
+            this.radioButtonSmallBoardSize.Location = new System.Drawing.Point(34, 46);
+            this.radioButtonSmallBoardSize.Name = "radioButtonSmallBoardSize";
+            this.radioButtonSmallBoardSize.Size = new System.Drawing.Size(59, 21);
+            this.radioButtonSmallBoardSize.TabIndex = 10;
+            this.radioButtonSmallBoardSize.TabStop = true;
+            this.radioButtonSmallBoardSize.Text = "6 x 6";
+            this.radioButtonSmallBoardSize.UseVisualStyleBackColor = true;
             // 
-            // mediumBoardSizeRadioButton
+            // radioButtonMediumBoardSize
             // 
-            this.mediumBoardSizeRadioButton.AutoSize = true;
-            this.mediumBoardSizeRadioButton.Location = new System.Drawing.Point(127, 46);
-            this.mediumBoardSizeRadioButton.Name = "mediumBoardSizeRadioButton";
-            this.mediumBoardSizeRadioButton.Size = new System.Drawing.Size(59, 21);
-            this.mediumBoardSizeRadioButton.TabIndex = 10;
-            this.mediumBoardSizeRadioButton.TabStop = true;
-            this.mediumBoardSizeRadioButton.Text = "8 x 8";
-            this.mediumBoardSizeRadioButton.UseVisualStyleBackColor = true;
-            this.mediumBoardSizeRadioButton.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.radioButtonMediumBoardSize.AutoSize = true;
+            this.radioButtonMediumBoardSize.Location = new System.Drawing.Point(127, 46);
+            this.radioButtonMediumBoardSize.Name = "radioButtonMediumBoardSize";
+            this.radioButtonMediumBoardSize.Size = new System.Drawing.Size(59, 21);
+            this.radioButtonMediumBoardSize.TabIndex = 10;
+            this.radioButtonMediumBoardSize.TabStop = true;
+            this.radioButtonMediumBoardSize.Text = "8 x 8";
+            this.radioButtonMediumBoardSize.UseVisualStyleBackColor = true;
             // 
-            // largeBoardSizeRadioButton
+            // radioButtonLargeBoardSize
             // 
-            this.largeBoardSizeRadioButton.AutoSize = true;
-            this.largeBoardSizeRadioButton.Location = new System.Drawing.Point(214, 46);
-            this.largeBoardSizeRadioButton.Name = "largeBoardSizeRadioButton";
-            this.largeBoardSizeRadioButton.Size = new System.Drawing.Size(79, 21);
-            this.largeBoardSizeRadioButton.TabIndex = 10;
-            this.largeBoardSizeRadioButton.TabStop = true;
-            this.largeBoardSizeRadioButton.Text = "10 x 10 ";
-            this.largeBoardSizeRadioButton.UseVisualStyleBackColor = true;
+            this.radioButtonLargeBoardSize.AutoSize = true;
+            this.radioButtonLargeBoardSize.Location = new System.Drawing.Point(214, 46);
+            this.radioButtonLargeBoardSize.Name = "radioButtonLargeBoardSize";
+            this.radioButtonLargeBoardSize.Size = new System.Drawing.Size(79, 21);
+            this.radioButtonLargeBoardSize.TabIndex = 10;
+            this.radioButtonLargeBoardSize.TabStop = true;
+            this.radioButtonLargeBoardSize.Text = "10 x 10 ";
+            this.radioButtonLargeBoardSize.UseVisualStyleBackColor = true;
             // 
-            // doneButton
+            // buttonDone
             // 
-            this.doneButton.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.doneButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.doneButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.doneButton.Font = new System.Drawing.Font("Microsoft JhengHei UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.doneButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.doneButton.Location = new System.Drawing.Point(172, 190);
-            this.doneButton.Name = "doneButton";
-            this.doneButton.Size = new System.Drawing.Size(121, 46);
-            this.doneButton.TabIndex = 11;
-            this.doneButton.Text = "Done";
-            this.doneButton.UseVisualStyleBackColor = false;
+            this.buttonDone.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.buttonDone.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.buttonDone.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonDone.Font = new System.Drawing.Font("Microsoft JhengHei UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonDone.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonDone.Location = new System.Drawing.Point(172, 190);
+            this.buttonDone.Name = "buttonDone";
+            this.buttonDone.Size = new System.Drawing.Size(121, 46);
+            this.buttonDone.TabIndex = 11;
+            this.buttonDone.Text = "Done";
+            this.buttonDone.UseVisualStyleBackColor = false;
+            this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
             // 
             // FormGameSettings
             // 
@@ -152,39 +149,26 @@ namespace EnglishCheckersLogic
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(312, 243);
-            this.Controls.Add(this.doneButton);
-            this.Controls.Add(this.largeBoardSizeRadioButton);
-            this.Controls.Add(this.mediumBoardSizeRadioButton);
-            this.Controls.Add(this.smallBoardSizeRadioButton);
-            this.Controls.Add(this.playerTypeCheckBoxButton);
-            this.Controls.Add(this.oPlayerName);
-            this.Controls.Add(this.xPlayerName);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.PlayersLabel);
-            this.Controls.Add(this.boardSizeLabel);
+            this.Controls.Add(this.buttonDone);
+            this.Controls.Add(this.radioButtonLargeBoardSize);
+            this.Controls.Add(this.radioButtonMediumBoardSize);
+            this.Controls.Add(this.radioButtonSmallBoardSize);
+            this.Controls.Add(this.checkBoxButtonPlayerTypeCheck);
+            this.Controls.Add(this.textButtonOPlayerName);
+            this.Controls.Add(this.textButtenXPlayerName);
+            this.Controls.Add(this.labelPlayer1);
+            this.Controls.Add(this.labelPlayers);
+            this.Controls.Add(this.labelBoardSize);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormGameSettings";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Game Settings";
-            this.Load += new System.EventHandler(this.FormGameSettings_Load);
+            this.Text = "Game Settings";            
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-
         #endregion
-
-        private System.Windows.Forms.Label boardSizeLabel;
-        private System.Windows.Forms.Label PlayersLabel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox xPlayerName;
-        private System.Windows.Forms.TextBox oPlayerName;
-        private System.Windows.Forms.CheckBox playerTypeCheckBoxButton;
-        private System.Windows.Forms.RadioButton smallBoardSizeRadioButton;
-        private System.Windows.Forms.RadioButton mediumBoardSizeRadioButton;
-        private System.Windows.Forms.RadioButton largeBoardSizeRadioButton;
-        private System.Windows.Forms.Button doneButton;
     }
 }
