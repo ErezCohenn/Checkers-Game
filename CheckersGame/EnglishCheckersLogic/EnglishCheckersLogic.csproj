@@ -37,7 +37,6 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameFinishedEventArgs.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="Player.cs" />
