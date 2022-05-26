@@ -120,11 +120,11 @@ namespace EnglishCheckersWinUI
 
         private void OnReceivedMovement()
         {
-            Movement movementToHandle = new Movement(pictureBoxSource.Location, pictureBoxDestination.)
+            Movement movementToHandle = new Movement(pictureBoxSource.PositionOnBoard, pictureBoxDestination.PositionOnBoard);
             if (RecivedMovement != null)
             {
 
-                RecivedMovement.Invoke(i_Movement);
+                RecivedMovement.Invoke(movementToHandle);
             }
 
         }
