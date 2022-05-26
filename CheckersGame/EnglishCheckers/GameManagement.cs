@@ -1,10 +1,13 @@
 ﻿using EnglishCheckersLogic;
 using System;
+using System.Windows.Forms;
 
 namespace EnglishCheckersWinUI
 {
     public class GameManagement
     {
+        private readonly string r_InvalidInputmessage = "Invalid move entered, please try again";
+        private readonly string r_InvalidInputBoxtitle = "Error";
         private readonly Game r_EnglishCheckersLogic;
         private readonly FormGame r_FormGame;
 
@@ -19,14 +22,21 @@ namespace EnglishCheckersWinUI
         {
             r_FormGame.GameDetailsUpdated += r_FormGame_GameDetailsUpdated;
             r_FormGame.YesNoMessageBoxClicked += r_FormGame_YesNoMessageBoxClicked;
+            r_FormGame.RecivedMovement += r_FormGame_RecivedMovment;
             r_EnglishCheckersLogic.GameFinshed += r_EnglishCheckersLogic_GameFinished;
             r_EnglishCheckersLogic.GameStarted += r_EnglishCheckersLogic_GameStarted;
+            r_EnglishCheckersLogic.BoardUpdated += r_EnglishCheckersLogic_BoardUpdated;
             r_FormGame.ShowDialog();
+        }
+
+        private void r_EnglishCheckersLogic_BoardUpdated(Board i_Board)
+        {
+            r_FormGame.UpdatePictureBoxBoard(i_Board);
         }
 
         private void r_EnglishCheckersLogic_GameStarted(Game i_Game)
         {
-            r_FormGame.SetNewSession(i_Game.PlayerX.GetScore(), i_Game.PlayerO.GetScore(), i_Game.CurrentPlayer.Name);
+            r_FormGame.SetNewSession(i_Game.PlayerX.Score, i_Game.PlayerO.Score, i_Game.CurrentPlayer.Name);
         }
 
         private void r_FormGame_YesNoMessageBoxClicked(object sender, EventArgs e)
@@ -55,6 +65,28 @@ namespace EnglishCheckersWinUI
         {
             EventGameDetailsArgs gameDetails = e as EventGameDetailsArgs;
             r_EnglishCheckersLogic.InitializeGameDetails(gameDetails.PlayerXName, gameDetails.PlayerOName, gameDetails.BoardSize, gameDetails.PlayerOType);
+        }
+
+        private void r_FormGame_RecivedMovment(Movement sender)
+        {
+
+            if (r_EnglishCheckersLogic.IsValidMove(sender))
+            {
+                r_EnglishCheckersLogic.MoveManager(sender);
+                if (!r_EnglishCheckersLogic.EatingSequence)
+                {
+                    r_FormGame.SwitchPlayers();
+                }
+                else
+                {
+                    r_FormGame.GameDetailsArgs.PreviousPlayer = r_FormGame.GameDetailsArgs.CurrentPlayer;
+                }
+            }
+            else
+            {
+                MessageBox.Show(r_InvalidInputmessage, r_InvalidInputBoxtitle);
+            }
+
         }
 
         /*private void playGameSession()

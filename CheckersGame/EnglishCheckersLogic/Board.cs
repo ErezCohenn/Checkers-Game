@@ -23,7 +23,7 @@
 
         }
 
-        public static bool isDiffrentPairing(int i_FirstNumber, int i_SecondNumber)
+        public static bool IsDiffrentPairing(int i_FirstNumber, int i_SecondNumber)
         {
             return (i_FirstNumber % 2) != (i_SecondNumber % 2);
         }
@@ -57,7 +57,7 @@
             {
                 for (int j = 0; j < r_Size; j++)
                 {
-                    if (isDiffrentPairing(i, j))
+                    if (IsDiffrentPairing(i, j))
                     {
                         if (i < (r_Size - 2) / 2)
                         {

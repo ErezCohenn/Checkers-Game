@@ -16,7 +16,6 @@ namespace EnglishCheckersWinUI
         private System.Windows.Forms.RadioButton radioButtonMediumBoardSize;
         private System.Windows.Forms.RadioButton radioButtonLargeBoardSize;
         private System.Windows.Forms.Button buttonDone;
-
         private const string k_ComputerLabel = "[Computer]";
         public FormGameSettings()
         {
