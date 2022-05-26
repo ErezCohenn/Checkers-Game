@@ -9,13 +9,12 @@ namespace EnglishCheckersWinUI
     public partial class FormGame : Form
     {
 
-        private const int k_PictureBoxWidth = 50;
-        private const int k_PictureBoxHeight = 50;
+        private const int k_PictureBoxSize = 50;
         private const int k_WidthExtention = 20;
         private const int k_HeightExtention = 80;
         private System.Windows.Forms.PictureBox[,] pictureBoxMatrix;
-        private System.Windows.Forms.Label player1Score;
-        private System.Windows.Forms.Label player2Score;
+        private System.Windows.Forms.Label labelPlayer1Name;
+        private System.Windows.Forms.Label labelPlayer2Name;
         private FormGameSettings m_FormGameSettings;
         private EventGameDetailsArgs m_GameDetailsArgs;
         public EventHandler GameDetailsUpdated;
@@ -78,8 +77,14 @@ namespace EnglishCheckersWinUI
 
         private void initializeGameForm()
         {
-            setFormBoarders();
+            setFormSize();
+            initializePlayersLabels();
             initializePictureBoxMatrix();
+        }
+
+        private void initializePlayersLabels()
+        {
+
         }
 
         private void OnGameDetailsUpdated()
@@ -93,9 +98,9 @@ namespace EnglishCheckersWinUI
 
         }
 
-        private void setFormBoarders()
+        private void setFormSize()
         {
-            this.Size = new Size(((int)m_GameDetailsArgs.BoardSize * k_PictureBoxWidth) + k_WidthExtention, ((int)m_GameDetailsArgs.BoardSize * k_PictureBoxHeight) + k_HeightExtention);
+            this.Size = new Size(((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_WidthExtention, ((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_HeightExtention);
         }
 
         private void initializePictureBoxMatrix()
@@ -114,9 +119,11 @@ namespace EnglishCheckersWinUI
                     else
                     {
                         pictureBoxMatrix[i, j].BackColor = Color.White;
+                        pictureBoxMatrix[i, j].Image = @"C:\Users\erez6\Desktop\לימודים\אקדמית יפו\שנה ב\ותכנות מונחה עצמים בסביבת דוט נט C#\C-SHARP-EX05\Checkers-Game\CheckersGame\EnglishCheckers\test.jpeg";
                     }
-                    pictureBoxMatrix[i, j].Size = new System.Drawing.Size(k_PictureBoxHeight, k_PictureBoxWidth);
-                    pictureBoxMatrix[i, j].Location = new System.Drawing.Point(k_PictureBoxHeight * i, k_HeightExtention + k_PictureBoxWidth * j);
+
+                    pictureBoxMatrix[i, j].Size = new System.Drawing.Size(k_PictureBoxSize, k_PictureBoxSize);
+                    pictureBoxMatrix[i, j].Location = new System.Drawing.Point(k_PictureBoxSize * i, k_HeightExtention + k_PictureBoxSize * j);
                     this.Controls.Add(this.pictureBoxMatrix[i, j]);
                 }
             }

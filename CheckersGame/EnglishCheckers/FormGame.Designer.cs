@@ -28,40 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.player1Score = new System.Windows.Forms.Label();
-            this.player2Score = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGame));
+            this.labelPlayer1Name = new System.Windows.Forms.Label();
+            this.labelPlayer2Name = new System.Windows.Forms.Label();
+            this.m_FormGameSettings = new EnglishCheckersWinUI.FormGameSettings();
             this.SuspendLayout();
             // 
-            // player1Score
+            // labelPlayer1Name
             // 
-            this.player1Score.AutoSize = true;
-            this.player1Score.Location = new System.Drawing.Point(36, 28);
-            this.player1Score.Name = "player1Score";
-            this.player1Score.Size = new System.Drawing.Size(64, 17);
-            this.player1Score.TabIndex = 0;
-            this.player1Score.Text = "Player 1:";
+            this.labelPlayer1Name.AutoSize = true;
+            this.labelPlayer1Name.Location = new System.Drawing.Point(36, 28);
+            this.labelPlayer1Name.Name = "labelPlayer1Name";
+            this.labelPlayer1Name.Size = new System.Drawing.Size(64, 17);
+            this.labelPlayer1Name.TabIndex = 0;
+            this.labelPlayer1Name.Text = "Player 1:";
             // 
-            // player2Score
+            // labelPlayer2Name
             // 
-            this.player2Score.AutoSize = true;
-            this.player2Score.Location = new System.Drawing.Point(159, 28);
-            this.player2Score.Name = "player2Score";
-            this.player2Score.Size = new System.Drawing.Size(64, 17);
-            this.player2Score.TabIndex = 1;
-            this.player2Score.Text = "Player 2:";
+            this.labelPlayer2Name.AutoSize = true;
+            this.labelPlayer2Name.Location = new System.Drawing.Point(159, 28);
+            this.labelPlayer2Name.Name = "labelPlayer2Name";
+            this.labelPlayer2Name.Size = new System.Drawing.Size(64, 17);
+            this.labelPlayer2Name.TabIndex = 1;
+            this.labelPlayer2Name.Text = "Player 2:";
+            // 
+            // m_FormGameSettings
+            // 
+            this.m_FormGameSettings.AutoSize = true;
+            this.m_FormGameSettings.ClientSize = new System.Drawing.Size(316, 259);
+            this.m_FormGameSettings.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.m_FormGameSettings.Icon = ((System.Drawing.Icon)(resources.GetObject("m_FormGameSettings.Icon")));
+            this.m_FormGameSettings.Location = new System.Drawing.Point(3435, 500);
+            this.m_FormGameSettings.MaximizeBox = false;
+            this.m_FormGameSettings.MinimizeBox = false;
+            this.m_FormGameSettings.Name = "m_FormGameSettings";
+            this.m_FormGameSettings.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.m_FormGameSettings.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.m_FormGameSettings.Text = "Game Settings";
+            this.m_FormGameSettings.Visible = false;
+            this.m_FormGameSettings.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormGameSettings_FormClosed);
             // 
             // FormGame
             // 
             this.ClientSize = new System.Drawing.Size(249, 236);
-            this.Controls.Add(this.player2Score);
-            this.Controls.Add(this.player1Score);
+            this.Controls.Add(this.labelPlayer2Name);
+            this.Controls.Add(this.labelPlayer1Name);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "FormGame";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "Damka";
             this.Load += new System.EventHandler(this.FormGame_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
-            m_FormGameSettings = new FormGameSettings();
-            m_FormGameSettings.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormGameSettings_FormClosed);
         }
         #endregion
     }
