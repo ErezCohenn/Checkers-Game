@@ -13,6 +13,13 @@ namespace EnglishCheckersWinUI
         private const int k_PictureBoxSize = 50;
         private const int k_WidthExtention = 20;
         private const int k_HeightExtention = 60;
+        private const string k_RedPawnImage = "RedPawn.png";
+        private const string k_RedKingImage = "RedKing.png";
+        private const string k_BlackPawnImage = "‏‏BlackPawn.png";
+        private const string k_BlackKingImage = "‏‏BlackKing.png";
+        private const string k_‏‏DisabledCellImage = "‏‏DisabledCell.png";
+        private const string k_EmptyCellImage = "EmptyCell.png";
+        private readonly string r_ResourcesFolderPath;
         private System.Windows.Forms.PictureBox[,] pictureBoxMatrix;
         private System.Windows.Forms.Label labelPlayer1Name;
         private System.Windows.Forms.Label labelPlayer2Name;
@@ -23,6 +30,7 @@ namespace EnglishCheckersWinUI
 
         public FormGame()
         {
+            r_ResourcesFolderPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, @"Resources");
             InitializeComponent();
         }
 
@@ -111,10 +119,16 @@ namespace EnglishCheckersWinUI
             this.Size = new Size(((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_WidthExtention, ((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_HeightExtention + 40);
         }
 
+        private void pictureBox_Click(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = sender as PictureBox;
+
+            pictureBox.BorderStyle = BorderStyle.Fixed3D;
+        }
+
         private void initializePictureBoxMatrix()
         {
             string fullFilePath = string.Empty;
-            string resourcesFolderPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, @"Resources");
 
             pictureBoxMatrix = new PictureBox[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
             for (int i = 0; i < (int)m_GameDetailsArgs.BoardSize; i++)
@@ -124,34 +138,38 @@ namespace EnglishCheckersWinUI
                     pictureBoxMatrix[i, j] = new PictureBox { Name = "", Size = new Size(k_PictureBoxSize, k_PictureBoxSize), Location = new Point(5 + k_PictureBoxSize * i, k_HeightExtention + k_PictureBoxSize * j), SizeMode = PictureBoxSizeMode.StretchImage };
                     if (diffrentPairing(i, j))
                     {
-
                         if (j < ((int)m_GameDetailsArgs.BoardSize - 2) / 2)
                         {
-
-                            fullFilePath = Path.Combine(resourcesFolderPath, "RedPawn.png");
-                            pictureBoxMatrix[i, j].Image = Image.FromFile(fullFilePath);
-                            pictureBoxMatrix[i, j].Enabled = true;
-
+                            setPictureBoxCell(k_RedPawnImage, i, j, false);
                         }
                         else if (j > (((int)m_GameDetailsArgs.BoardSize + 2) / 2) - 1)
                         {
-
-                            fullFilePath = Path.Combine(resourcesFolderPath, "‏‏BlackPawn.png");
-                            pictureBoxMatrix[i, j].Image = Image.FromFile(fullFilePath);
-                            pictureBoxMatrix[i, j].Enabled = true;
+                            setPictureBoxCell(k_BlackPawnImage, i, j, true);
                         }
-
-                        pictureBoxMatrix[i, j].BackColor = Color.White;
+                        else
+                        {
+                            setPictureBoxCell(k_EmptyCellImage, i, j, false);
+                        }
                     }
                     else
                     {
 
-                        fullFilePath = Path.Combine(resourcesFolderPath, "‏‏DisabledCell.png");
-                        pictureBoxMatrix[i, j].Image = Image.FromFile(fullFilePath);
+                        setPictureBoxCell(k_‏‏DisabledCellImage, i, j, false);
                     }
+
                     this.Controls.Add(this.pictureBoxMatrix[i, j]);
+                    pictureBoxMatrix[i, j].Click += pictureBox_Click;
                 }
             }
+        }
+
+        private void setPictureBoxCell(string i_PawnImage, int i_Row, int i_Col, bool i_EnableButton)
+        {
+            string fullFilePath = string.Empty;
+
+            fullFilePath = Path.Combine(r_ResourcesFolderPath, i_PawnImage);
+            pictureBoxMatrix[i_Row, i_Col].Image = Image.FromFile(fullFilePath);
+            pictureBoxMatrix[i_Row, i_Col].Enabled = i_EnableButton;
         }
         private bool diffrentPairing(int i_FirstMumber, int i_SecondNumber)
         {
