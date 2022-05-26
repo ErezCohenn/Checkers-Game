@@ -20,7 +20,8 @@ namespace EnglishCheckersLogic
         private Player m_PreviousPlayer;
         private bool m_EatingSequence;
         private eSessionFinishType m_FinishReason;
-        public EventHandler GameFinshed;
+        public event Action<Game> GameFinshed;
+        public event Action<Game> GameStarted;
 
         public Game()
         {
@@ -41,6 +42,14 @@ namespace EnglishCheckersLogic
             InitializeSession();
         }
 
+        private void OnGameStarted()
+        {
+            if (GameStarted != null)
+            {
+                GameStarted.Invoke(this);
+            }
+        }
+
         public void InitializeSession()
         {
             m_Board.InitializeBoard();
@@ -48,6 +57,7 @@ namespace EnglishCheckersLogic
             m_PlayerO.InitializePawnsOnBoard(m_Board);
             m_CurrentPlayer = m_PlayerX;
             m_PreviousPlayer = m_PlayerO;
+            OnGameStarted();
         }
 
         public bool IsSessionFinished()
@@ -88,7 +98,7 @@ namespace EnglishCheckersLogic
         {
             if (GameFinshed != null)
             {
-                GameFinshed.Invoke(this, null);
+                GameFinshed.Invoke(this);
             }
         }
 

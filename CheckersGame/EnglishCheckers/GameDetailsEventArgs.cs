@@ -8,6 +8,7 @@ namespace EnglishCheckersWinUI
         private readonly string r_PlayerOName;
         private readonly Board.eBoradSize r_BoardSize;
         private readonly Player.ePlayerType r_PlayerOType;
+        private string m_CurrentPlayer;
 
         public EventGameDetailsArgs(string i_PlayerOName, string i_PlayerXName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
         {
@@ -15,6 +16,7 @@ namespace EnglishCheckersWinUI
             r_PlayerOName = i_PlayerOName;
             r_BoardSize = i_BoardSize;
             r_PlayerOType = i_PlayerOType;
+            m_CurrentPlayer = r_PlayerXName;
         }
 
         public Board.eBoradSize BoardSize
@@ -46,6 +48,19 @@ namespace EnglishCheckersWinUI
             get
             {
                 return r_PlayerOType;
+            }
+        }
+
+        public string CurrentPlayer
+        {
+            get
+            {
+                return m_CurrentPlayer;
+            }
+
+            set
+            {
+                m_CurrentPlayer = value;
             }
         }
     }

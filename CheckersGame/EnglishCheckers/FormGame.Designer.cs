@@ -42,7 +42,6 @@
             this.labelPlayer1Name.Size = new System.Drawing.Size(103, 17);
             this.labelPlayer1Name.TabIndex = 0;
             this.labelPlayer1Name.Text = "Player 1: score";
-            this.labelPlayer1Name.Click += new System.EventHandler(this.labelPlayer1Name_Click);
             // 
             // labelPlayer2Name
             // 
