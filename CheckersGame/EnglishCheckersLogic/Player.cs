@@ -69,7 +69,7 @@ namespace EnglishCheckersLogic
             {
                 for (int j = 0; j < i_Board.Size; j++)
                 {
-                    if (Board.isDiffrentPairing(i, j))
+                    if (Board.IsDiffrentPairing(i, j))
                     {
                         initializePosition = new Position(i, j);
                         m_PlayerPawns.Add(new Pawn((Pawn.eType)r_SignType, initializePosition, Pawn.eValue.Pawn));

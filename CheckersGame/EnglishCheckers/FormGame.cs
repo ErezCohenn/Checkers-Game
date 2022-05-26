@@ -10,17 +10,12 @@ namespace EnglishCheckersWinUI
     {
         private const int k_PictureBoxSize = 50;
         private const int k_WidthExtention = 20;
-        private const int k_HeightExtention = 60;
-        public static readonly string sr_RedPawnImage = "RedPawn.png";
-        public static readonly string sr_RedKingImage = "RedKing.png";
-        public static readonly string sr_BlackPawnImage = "‏‏BlackPawn.png";
-        public static readonly string sr_BlackKingImage = "‏‏BlackKing.png";
-        public static readonly string sr_‏‏DisabledCellImage = "‏‏DisabledCell.png";
-        private static readonly string sr_EmptyCellImage = "EmptyCell.png";
-        private PictureBoxCell[,] pictureBoxMatrix;
+        private const int k_HeightExtention = 100;
+        private const int k_HeightMargin = 60;
+        private const int k_WidthMargin = 5;
+        private PictureBoxCell[,] pictureBoxBoard;
         private PictureBoxCell pictureBoxSource;
         private PictureBoxCell pictureBoxDestination;
-        private bool m_PictureBoxInProgress;
         private System.Windows.Forms.Label labelPlayer1Name;
         private System.Windows.Forms.Label labelPlayer2Name;
         private FormGameSettings m_FormGameSettings;
@@ -31,7 +26,6 @@ namespace EnglishCheckersWinUI
 
         public FormGame()
         {
-            m_PictureBoxInProgress = false;
             InitializeComponent();
         }
 
@@ -43,8 +37,7 @@ namespace EnglishCheckersWinUI
         public void SetNewSession(int i_Player1Sccore, int i_Player2Sccore, string i_CurrentPlayer)
         {
             m_GameDetailsArgs.CurrentPlayer = i_CurrentPlayer;
-            initializePlayersLabels(i_Player1Sccore, i_Player2Sccore);
-            initializePictureBoxMatrix();
+            setPlayersLabels(i_Player1Sccore, i_Player2Sccore);
         }
 
         public void ContinuePlayingMessageBox(Game i_GameLogic)
@@ -88,15 +81,48 @@ namespace EnglishCheckersWinUI
                       this.Close();
                   }*/
 
+            initializeForm();
             OnGameDetailsUpdated();
-            setFormSize();
         }
 
-        private void initializePlayersLabels(int i_Player1Sccore, int i_Player2Sccore)
+        private void initializeForm()
+        {
+            initializeGameDetailsArgs();
+            initializeFormSize();
+            initializePictureBoxBoard();
+        }
+
+        private void initializeGameDetailsArgs()
+        {
+            m_GameDetailsArgs = new EventGameDetailsArgs(m_FormGameSettings.OPlayerName, m_FormGameSettings.XPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
+        }
+
+        private void initializePictureBoxBoard()
+        {
+            pictureBoxBoard = new PictureBoxCell[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
+            for (int i = 0; i < (int)m_GameDetailsArgs.BoardSize; i++)
+            {
+                for (int j = 0; j < (int)m_GameDetailsArgs.BoardSize; j++)
+                {
+                    pictureBoxBoard[i, j] = new PictureBoxCell(j, i);
+                    initializePictureBox(pictureBoxBoard[i, j]);
+                    Controls.Add(pictureBoxBoard[i, j]);
+                }
+            }
+        }
+
+        private void initializePictureBox(PictureBoxCell pictureBoxCell)
+        {
+            pictureBoxCell.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
+            pictureBoxCell.Location = new Point(k_WidthMargin + k_PictureBoxSize * pictureBoxCell.Row, k_HeightMargin + k_PictureBoxSize * pictureBoxCell.Col);
+            pictureBoxCell.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
+
+        private void setPlayersLabels(int i_Player1Sccore, int i_Player2Sccore)
         {
             if (m_GameDetailsArgs.PlayerOName == "[Computer]")
             {
-                this.labelPlayer1Name.Text = string.Format("{0}: {1}", "Computer", i_Player1Sccore);
+                this.labelPlayer1Name.Text = string.Format("{0}: {1}", Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer), i_Player1Sccore);
             }
             else
             {
@@ -109,13 +135,10 @@ namespace EnglishCheckersWinUI
 
         private void OnGameDetailsUpdated()
         {
-            m_GameDetailsArgs = new EventGameDetailsArgs(m_FormGameSettings.OPlayerName, m_FormGameSettings.XPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
-
             if (GameDetailsUpdated != null)
             {
                 GameDetailsUpdated.Invoke(this, m_GameDetailsArgs);
             }
-
         }
 
         private void OnReceivedMovement()
@@ -128,95 +151,108 @@ namespace EnglishCheckersWinUI
 
         }
 
-        private void setFormSize()
+        private void initializeFormSize()
         {
-            this.Size = new Size(((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_WidthExtention, ((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_HeightExtention + 40);
+            this.Size = new Size(((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_WidthExtention, ((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_HeightExtention);
         }
 
         private void pictureBox_Click(object sender, EventArgs e)
         {
             PictureBoxCell pictureBoxClicked = sender as PictureBoxCell;
 
-            if (m_PictureBoxInProgress)
+            if (pictureBoxSource == null)
             {
-
-            }
-            else
-            {
-                if (pictureBoxSource == null)
+                if (pictureBoxClicked.Name != Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty))
                 {
                     pictureBoxSource = pictureBoxClicked;
                     pictureBoxClicked.BorderStyle = BorderStyle.Fixed3D;
-                    //disablePictureBoxByType(m_GameDetailsArgs.CurrentPlayer);
-                    //enablePictureBoxByType(Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty));
                 }
-                else
+            }
+            else
+            {
+                if (pictureBoxClicked.Name == Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty))
                 {
-                    if (pictureBoxClicked.Name == Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty))
-                    {
-                        pictureBoxDestination = pictureBoxClicked;
-                        OnReceivedMovement();
-                        pictureBoxClicked.BorderStyle = BorderStyle.FixedSingle;
-                        pictureBoxDestination = null;
-                        pictureBoxSource = null;
-                    }
-                    else if (pictureBoxClicked == pictureBoxSource)
-                    {
-                        pictureBoxClicked.BorderStyle = BorderStyle.FixedSingle;
-                        pictureBoxSource = null;
-                        //disablePictureBoxByType(m_GameDetailsArgs.CurrentPlayer);
-                        //enablePictureBoxByType(Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty));
-                    }
+                    pictureBoxDestination = pictureBoxClicked;
+                    pictureBoxClicked.BorderStyle = BorderStyle.Fixed3D;
+                    OnReceivedMovement();
+                    pictureBoxClicked.BorderStyle = BorderStyle.None;
+                    pictureBoxSource.BorderStyle = BorderStyle.None;
+                    pictureBoxDestination = null;
+                    pictureBoxSource = null;
+                }
+                else if (pictureBoxClicked == pictureBoxSource)
+                {
+                    pictureBoxClicked.BorderStyle = BorderStyle.None;
+                    pictureBoxSource = null;
                 }
             }
         }
 
-        private void initializePictureBoxMatrix()
+        public void UpdatePictureBoxBoard(Board i_Board)
         {
-            string fullFilePath = string.Empty;
+            Pawn.eType pawnType = Pawn.eType.Empty;
 
-            pictureBoxMatrix = new PictureBoxCell[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
-            for (int i = 0; i < (int)m_GameDetailsArgs.BoardSize; i++)
+            for (int i = 0; i < i_Board.Size; i++)
             {
-                for (int j = 0; j < (int)m_GameDetailsArgs.BoardSize; j++)
+                for (int j = 0; j < i_Board.Size; j++)
                 {
-                    pictureBoxMatrix[i, j] = new PictureBoxCell(i, j)
+                    pawnType = i_Board.GetCellValue(i, j);
+                    if (Board.IsDiffrentPairing(i, j))
                     {
-                        Size = new Size(k_PictureBoxSize, k_PictureBoxSize),
-                        Location = new Point(5 + k_PictureBoxSize * i,
-                        k_HeightExtention + k_PictureBoxSize * j),
-                        SizeMode = PictureBoxSizeMode.StretchImage
-                    };
-                    if (diffrentPairing(i, j))
-                    {
-                        if (j < ((int)m_GameDetailsArgs.BoardSize - 2) / 2)
+                        if (isPlayer1Pawn(pawnType))
                         {
-                            pictureBoxMatrix[i, j].SetPictureBoxCell(sr_RedPawnImage, false, Pawn.eType.OPawn);
+                            pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.RedPawn, false, pawnType);
                         }
-                        else if (j > (((int)m_GameDetailsArgs.BoardSize + 2) / 2) - 1)
+                        else if (isPlayer2Pawn(pawnType))
                         {
-                            pictureBoxMatrix[i, j].SetPictureBoxCell(sr_BlackPawnImage, true, Pawn.eType.XPawn);
+                            pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.BlackPawn, true, pawnType);
                         }
                         else
                         {
-                            pictureBoxMatrix[i, j].SetPictureBoxCell(sr_EmptyCellImage, false, Pawn.eType.Empty);
+                            pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.Empty, true, pawnType);
                         }
 
-                        pictureBoxMatrix[i, j].Click += pictureBox_Click;
+                        pictureBoxBoard[i, j].Click += pictureBox_Click;
                     }
                     else
                     {
-                        pictureBoxMatrix[i, j].SetPictureBoxCell(sr_‏‏DisabledCellImage, false, Pawn.eType.Disable);
+                        pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.Disabled, false, Pawn.eType.Disable);
                     }
-
-                    Controls.Add(pictureBoxMatrix[i, j]);
-
                 }
             }
         }
-        private bool diffrentPairing(int i_FirstMumber, int i_SecondNumber)
+
+        private bool isPlayer1Pawn(Pawn.eType i_PawnType)
         {
-            return i_FirstMumber % 2 == i_SecondNumber % 2;
+            return i_PawnType == Pawn.eType.OKing || i_PawnType == Pawn.eType.OPawn;
+        }
+
+        private bool isPlayer2Pawn(Pawn.eType i_PawnType)
+        {
+            return i_PawnType == Pawn.eType.XKing || i_PawnType == Pawn.eType.XPawn;
+        }
+
+        public void SwitchPlayers()
+        {
+            string playerNameSaver = null;
+
+            if (m_GameDetailsArgs.CurrentPlayer == m_GameDetailsArgs.PreviousPlayer)
+            {
+                m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer; //== r_PlayerOName ? r_PlayerXName : r_PlayerOName;
+            }
+            else
+            {
+                playerNameSaver = m_GameDetailsArgs.CurrentPlayer;
+                m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer;
+                m_GameDetailsArgs.PreviousPlayer = playerNameSaver;
+            }
+        }
+        public EventGameDetailsArgs GameDetailsArgs
+        {
+            get
+            {
+                return m_GameDetailsArgs;
+            }
         }
     }
 }

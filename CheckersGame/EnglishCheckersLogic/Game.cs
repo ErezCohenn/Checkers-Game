@@ -22,6 +22,7 @@ namespace EnglishCheckersLogic
         private eSessionFinishType m_FinishReason;
         public event Action<Game> GameFinshed;
         public event Action<Game> GameStarted;
+        public event Action<Board> BoardUpdated;
 
         public Game()
         {
@@ -50,6 +51,14 @@ namespace EnglishCheckersLogic
             }
         }
 
+        private void OnBoardUpdated()
+        {
+            if (BoardUpdated != null)
+            {
+                BoardUpdated.Invoke(m_Board);
+            }
+        }
+
         public void InitializeSession()
         {
             m_Board.InitializeBoard();
@@ -57,6 +66,7 @@ namespace EnglishCheckersLogic
             m_PlayerO.InitializePawnsOnBoard(m_Board);
             m_CurrentPlayer = m_PlayerX;
             m_PreviousPlayer = m_PlayerO;
+            OnBoardUpdated();
             OnGameStarted();
         }
 
@@ -135,6 +145,8 @@ namespace EnglishCheckersLogic
             {
                 switchPlayers();
             }
+
+            OnBoardUpdated();
         }
 
         private void switchPlayers()
