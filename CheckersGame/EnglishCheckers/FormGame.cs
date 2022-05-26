@@ -120,11 +120,10 @@ namespace EnglishCheckersWinUI
 
         private void OnReceivedMovement()
         {
-            Movement movementToHandle = new Movement(pictureBoxSource.PositionOnBoard, pictureBoxDestination.PositionOnBoard);
             if (RecivedMovement != null)
             {
 
-                RecivedMovement.Invoke(movementToHandle);
+                RecivedMovement.Invoke(new Movement(pictureBoxSource.PositionOnBoard, pictureBoxDestination.PositionOnBoard));
             }
 
         }
@@ -139,6 +138,10 @@ namespace EnglishCheckersWinUI
             PictureBoxCell pictureBoxClicked = sender as PictureBoxCell;
 
             if (m_PictureBoxInProgress)
+            {
+
+            }
+            else
             {
                 if (pictureBoxSource == null)
                 {

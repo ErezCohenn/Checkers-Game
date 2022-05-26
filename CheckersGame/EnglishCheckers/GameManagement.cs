@@ -26,7 +26,7 @@ namespace EnglishCheckersWinUI
 
         private void r_EnglishCheckersLogic_GameStarted(Game i_Game)
         {
-            r_FormGame.SetNewSession(i_Game.PlayerX.GetScore, i_Game.PlayerO.GetScore, i_Game.CurrentPlayer.Name);
+            r_FormGame.SetNewSession(i_Game.PlayerX.GetScore(), i_Game.PlayerO.GetScore(), i_Game.CurrentPlayer.Name);
         }
 
         private void r_FormGame_YesNoMessageBoxClicked(object sender, EventArgs e)
