@@ -37,20 +37,22 @@
             // labelPlayer1Name
             // 
             this.labelPlayer1Name.AutoSize = true;
-            this.labelPlayer1Name.Location = new System.Drawing.Point(36, 28);
+            this.labelPlayer1Name.Location = new System.Drawing.Point(29, 28);
             this.labelPlayer1Name.Name = "labelPlayer1Name";
-            this.labelPlayer1Name.Size = new System.Drawing.Size(64, 17);
+            this.labelPlayer1Name.Size = new System.Drawing.Size(103, 17);
             this.labelPlayer1Name.TabIndex = 0;
-            this.labelPlayer1Name.Text = "Player 1:";
+            this.labelPlayer1Name.Text = "Player 1: score";
+            this.labelPlayer1Name.Click += new System.EventHandler(this.labelPlayer1Name_Click);
             // 
             // labelPlayer2Name
             // 
+            this.labelPlayer2Name.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPlayer2Name.AutoSize = true;
-            this.labelPlayer2Name.Location = new System.Drawing.Point(159, 28);
+            this.labelPlayer2Name.Location = new System.Drawing.Point(138, 28);
             this.labelPlayer2Name.Name = "labelPlayer2Name";
-            this.labelPlayer2Name.Size = new System.Drawing.Size(64, 17);
+            this.labelPlayer2Name.Size = new System.Drawing.Size(103, 17);
             this.labelPlayer2Name.TabIndex = 1;
-            this.labelPlayer2Name.Text = "Player 2:";
+            this.labelPlayer2Name.Text = "Player 2: score";
             // 
             // m_FormGameSettings
             // 

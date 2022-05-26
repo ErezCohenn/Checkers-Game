@@ -49,6 +49,9 @@
       <DependentUpon>FormGameSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="GameManagement.cs" />
+    <Compile Include="PictureBoxCell.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
