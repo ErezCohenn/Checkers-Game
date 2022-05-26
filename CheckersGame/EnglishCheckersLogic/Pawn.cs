@@ -11,6 +11,7 @@ namespace EnglishCheckersLogic
             OKing = 'U',
             XKing = 'K',
             Empty = ' ',
+            Disable,
         }
 
         public enum eValue
