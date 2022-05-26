@@ -20,7 +20,13 @@ namespace EnglishCheckersWinUI
             r_FormGame.GameDetailsUpdated += r_FormGame_GameDetailsUpdated;
             r_FormGame.YesNoMessageBoxClicked += r_FormGame_YesNoMessageBoxClicked;
             r_EnglishCheckersLogic.GameFinshed += r_EnglishCheckersLogic_GameFinished;
+            r_EnglishCheckersLogic.GameStarted += r_EnglishCheckersLogic_GameStarted;
             r_FormGame.ShowDialog();
+        }
+
+        private void r_EnglishCheckersLogic_GameStarted(Game i_Game)
+        {
+            r_FormGame.SetNewSession(i_Game.PlayerX.GetScore, i_Game.PlayerO.GetScore, i_Game.CurrentPlayer);
         }
 
         private void r_FormGame_YesNoMessageBoxClicked(object sender, EventArgs e)
@@ -30,6 +36,7 @@ namespace EnglishCheckersWinUI
             if (yesNoMessageBoxEventArgs.IsPressedYesInMessageBox)
             {
                 r_EnglishCheckersLogic.InitializeSession();
+                r_FormGame.InitializeSession();
             }
             else
             {
@@ -37,7 +44,7 @@ namespace EnglishCheckersWinUI
             }
         }
 
-        private void r_EnglishCheckersLogic_GameFinished(object sender, EventArgs e)
+        private void r_EnglishCheckersLogic_GameFinished(object sender)
         {
             Game gameLogic = sender as Game;
 

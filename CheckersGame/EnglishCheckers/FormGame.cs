@@ -1,6 +1,7 @@
 ﻿using EnglishCheckersLogic;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -28,6 +29,12 @@ namespace EnglishCheckersWinUI
         private void FormGame_Load(object sender, System.EventArgs e)
         {
             m_FormGameSettings.ShowDialog();
+        }
+
+        public void SetNewSession(Func<int> getScore1, Func<int> getScore2, string currentPlayer)
+        {
+            initializePlayersLabels();
+            initializePictureBoxMatrix();
         }
 
         public void ContinuePlayingMessageBox(Game i_GameLogic)
@@ -72,14 +79,7 @@ namespace EnglishCheckersWinUI
                   }*/
 
             OnGameDetailsUpdated();
-            initializeGameForm();
-        }
-
-        private void initializeGameForm()
-        {
             setFormSize();
-            initializePlayersLabels();
-            initializePictureBoxMatrix();
         }
 
         private void initializePlayersLabels()
@@ -113,41 +113,42 @@ namespace EnglishCheckersWinUI
 
         private void initializePictureBoxMatrix()
         {
-            pictureBoxMatrix = new PictureBox[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
+            string fullFilePath = string.Empty;
+            string resourcesFolderPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, @"Resources");
 
+            pictureBoxMatrix = new PictureBox[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
             for (int i = 0; i < (int)m_GameDetailsArgs.BoardSize; i++)
             {
                 for (int j = 0; j < (int)m_GameDetailsArgs.BoardSize; j++)
                 {
-                    // pictureBoxMatrix[i, j].Size = new System.Drawing.Size(k_PictureBoxSize, k_PictureBoxSize);
-                    // pictureBoxMatrix[i, j].Location = new System.Drawing.Point(5 + k_PictureBoxSize * i, k_HeightExtention + k_PictureBoxSize * j);
-
                     pictureBoxMatrix[i, j] = new PictureBox { Name = "", Size = new Size(k_PictureBoxSize, k_PictureBoxSize), Location = new Point(5 + k_PictureBoxSize * i, k_HeightExtention + k_PictureBoxSize * j), SizeMode = PictureBoxSizeMode.StretchImage };
                     if (diffrentPairing(i, j))
                     {
 
                         if (j < ((int)m_GameDetailsArgs.BoardSize - 2) / 2)
                         {
-                            pictureBoxMatrix[i, j].Image = Image.FromFile(@"C:\Chen Berger\OOP in DN 2022\Ex05\Checkers-Game\CheckersGame\EnglishCheckers\RedPawn.png");
+
+                            fullFilePath = Path.Combine(resourcesFolderPath, "RedPawn.png");
+                            pictureBoxMatrix[i, j].Image = Image.FromFile(fullFilePath);
+                            pictureBoxMatrix[i, j].Enabled = true;
 
                         }
                         else if (j > (((int)m_GameDetailsArgs.BoardSize + 2) / 2) - 1)
                         {
-                            pictureBoxMatrix[i, j].Image = Image.FromFile(@"C:\Chen Berger\OOP in DN 2022\Ex05\Checkers-Game\CheckersGame\EnglishCheckers\‏‏BlackPawn.png");
+
+                            fullFilePath = Path.Combine(resourcesFolderPath, "‏‏BlackPawn.png");
+                            pictureBoxMatrix[i, j].Image = Image.FromFile(fullFilePath);
+                            pictureBoxMatrix[i, j].Enabled = true;
                         }
 
                         pictureBoxMatrix[i, j].BackColor = Color.White;
-
-                        // pictureBoxMatrix[i, j].ImageLocation = @"C:\Chen Berger\OOP in DN 2022\Ex05\Checkers-Game\CheckersGame\EnglishCheckers\test.png";
                     }
                     else
                     {
 
-                        pictureBoxMatrix[i, j].BackgroundImage = Image.FromFile(@"C:\Chen Berger\OOP in DN 2022\Ex05\Checkers-Game\CheckersGame\EnglishCheckers\‏‏DisabledCell.PNG");
-                        //pictureBoxMatrix[i, j].Image = @"C:\Users\erez6\Desktop\לימודים\אקדמית יפו\שנה ב\ותכנות מונחה עצמים בסביבת דוט נט C#\C-SHARP-EX05\Checkers-Game\CheckersGame\EnglishCheckers\test.jpeg";
+                        fullFilePath = Path.Combine(resourcesFolderPath, "‏‏DisabledCell.png");
+                        pictureBoxMatrix[i, j].Image = Image.FromFile(fullFilePath);
                     }
-
-
                     this.Controls.Add(this.pictureBoxMatrix[i, j]);
                 }
             }
@@ -155,11 +156,6 @@ namespace EnglishCheckersWinUI
         private bool diffrentPairing(int i_FirstMumber, int i_SecondNumber)
         {
             return i_FirstMumber % 2 == i_SecondNumber % 2;
-        }
-
-        private void labelPlayer1Name_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
