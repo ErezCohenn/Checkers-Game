@@ -1,7 +1,6 @@
 ﻿using EnglishCheckersLogic;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -9,28 +8,30 @@ namespace EnglishCheckersWinUI
 {
     public partial class FormGame : Form
     {
-
         private const int k_PictureBoxSize = 50;
         private const int k_WidthExtention = 20;
         private const int k_HeightExtention = 60;
-        private const string k_RedPawnImage = "RedPawn.png";
-        private const string k_RedKingImage = "RedKing.png";
-        private const string k_BlackPawnImage = "‏‏BlackPawn.png";
-        private const string k_BlackKingImage = "‏‏BlackKing.png";
-        private const string k_‏‏DisabledCellImage = "‏‏DisabledCell.png";
-        private const string k_EmptyCellImage = "EmptyCell.png";
-        private readonly string r_ResourcesFolderPath;
-        private System.Windows.Forms.PictureBox[,] pictureBoxMatrix;
+        public static readonly string sr_RedPawnImage = "RedPawn.png";
+        public static readonly string sr_RedKingImage = "RedKing.png";
+        public static readonly string sr_BlackPawnImage = "‏‏BlackPawn.png";
+        public static readonly string sr_BlackKingImage = "‏‏BlackKing.png";
+        public static readonly string sr_‏‏DisabledCellImage = "‏‏DisabledCell.png";
+        private static readonly string sr_EmptyCellImage = "EmptyCell.png";
+        private PictureBoxCell[,] pictureBoxMatrix;
+        private PictureBoxCell pictureBoxSource;
+        private PictureBoxCell pictureBoxDestination;
+        private bool m_PictureBoxInProgress;
         private System.Windows.Forms.Label labelPlayer1Name;
         private System.Windows.Forms.Label labelPlayer2Name;
         private FormGameSettings m_FormGameSettings;
         private EventGameDetailsArgs m_GameDetailsArgs;
         public EventHandler GameDetailsUpdated;
         public EventHandler YesNoMessageBoxClicked;
+        public event Action<Movement> RecivedMovement;
 
         public FormGame()
         {
-            r_ResourcesFolderPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, @"Resources");
+            m_PictureBoxInProgress = false;
             InitializeComponent();
         }
 
@@ -39,9 +40,10 @@ namespace EnglishCheckersWinUI
             m_FormGameSettings.ShowDialog();
         }
 
-        public void SetNewSession(Func<int> getScore1, Func<int> getScore2, string currentPlayer)
+        public void SetNewSession(int i_Player1Sccore, int i_Player2Sccore, string i_CurrentPlayer)
         {
-            initializePlayersLabels();
+            m_GameDetailsArgs.CurrentPlayer = i_CurrentPlayer;
+            initializePlayersLabels(i_Player1Sccore, i_Player2Sccore);
             initializePictureBoxMatrix();
         }
 
@@ -90,17 +92,19 @@ namespace EnglishCheckersWinUI
             setFormSize();
         }
 
-        private void initializePlayersLabels()
+        private void initializePlayersLabels(int i_Player1Sccore, int i_Player2Sccore)
         {
             if (m_GameDetailsArgs.PlayerOName == "[Computer]")
             {
-                this.labelPlayer1Name.Text = string.Format("{0}: {1}", "Computer", "score");
+                this.labelPlayer1Name.Text = string.Format("{0}: {1}", "Computer", i_Player1Sccore);
             }
             else
             {
-                this.labelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerOName, "score");
+                this.labelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerOName, i_Player1Sccore);
             }
-            this.labelPlayer2Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, "score");
+
+            this.labelPlayer2Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, i_Player2Sccore);
+            this.labelPlayer2Name.ForeColor = Color.Blue;
         }
 
         private void OnGameDetailsUpdated()
@@ -114,6 +118,17 @@ namespace EnglishCheckersWinUI
 
         }
 
+        private void OnReceivedMovement()
+        {
+            Movement movementToHandle = new Movement(pictureBoxSource.Location, pictureBoxDestination.)
+            if (RecivedMovement != null)
+            {
+
+                RecivedMovement.Invoke(i_Movement);
+            }
+
+        }
+
         private void setFormSize()
         {
             this.Size = new Size(((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_WidthExtention, ((int)m_GameDetailsArgs.BoardSize * k_PictureBoxSize) + k_HeightExtention + 40);
@@ -121,55 +136,80 @@ namespace EnglishCheckersWinUI
 
         private void pictureBox_Click(object sender, EventArgs e)
         {
-            PictureBox pictureBox = sender as PictureBox;
+            PictureBoxCell pictureBoxClicked = sender as PictureBoxCell;
 
-            pictureBox.BorderStyle = BorderStyle.Fixed3D;
+            if (m_PictureBoxInProgress)
+            {
+                if (pictureBoxSource == null)
+                {
+                    pictureBoxSource = pictureBoxClicked;
+                    pictureBoxClicked.BorderStyle = BorderStyle.Fixed3D;
+                    //disablePictureBoxByType(m_GameDetailsArgs.CurrentPlayer);
+                    //enablePictureBoxByType(Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty));
+                }
+                else
+                {
+                    if (pictureBoxClicked.Name == Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty))
+                    {
+                        pictureBoxDestination = pictureBoxClicked;
+                        OnReceivedMovement();
+                        pictureBoxClicked.BorderStyle = BorderStyle.FixedSingle;
+                        pictureBoxDestination = null;
+                        pictureBoxSource = null;
+                    }
+                    else if (pictureBoxClicked == pictureBoxSource)
+                    {
+                        pictureBoxClicked.BorderStyle = BorderStyle.FixedSingle;
+                        pictureBoxSource = null;
+                        //disablePictureBoxByType(m_GameDetailsArgs.CurrentPlayer);
+                        //enablePictureBoxByType(Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty));
+                    }
+                }
+            }
         }
 
         private void initializePictureBoxMatrix()
         {
             string fullFilePath = string.Empty;
 
-            pictureBoxMatrix = new PictureBox[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
+            pictureBoxMatrix = new PictureBoxCell[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
             for (int i = 0; i < (int)m_GameDetailsArgs.BoardSize; i++)
             {
                 for (int j = 0; j < (int)m_GameDetailsArgs.BoardSize; j++)
                 {
-                    pictureBoxMatrix[i, j] = new PictureBox { Name = "", Size = new Size(k_PictureBoxSize, k_PictureBoxSize), Location = new Point(5 + k_PictureBoxSize * i, k_HeightExtention + k_PictureBoxSize * j), SizeMode = PictureBoxSizeMode.StretchImage };
+                    pictureBoxMatrix[i, j] = new PictureBoxCell(i, j)
+                    {
+                        Size = new Size(k_PictureBoxSize, k_PictureBoxSize),
+                        Location = new Point(5 + k_PictureBoxSize * i,
+                        k_HeightExtention + k_PictureBoxSize * j),
+                        SizeMode = PictureBoxSizeMode.StretchImage
+                    };
                     if (diffrentPairing(i, j))
                     {
                         if (j < ((int)m_GameDetailsArgs.BoardSize - 2) / 2)
                         {
-                            setPictureBoxCell(k_RedPawnImage, i, j, false);
+                            pictureBoxMatrix[i, j].SetPictureBoxCell(sr_RedPawnImage, false, Pawn.eType.OPawn);
                         }
                         else if (j > (((int)m_GameDetailsArgs.BoardSize + 2) / 2) - 1)
                         {
-                            setPictureBoxCell(k_BlackPawnImage, i, j, true);
+                            pictureBoxMatrix[i, j].SetPictureBoxCell(sr_BlackPawnImage, true, Pawn.eType.XPawn);
                         }
                         else
                         {
-                            setPictureBoxCell(k_EmptyCellImage, i, j, false);
+                            pictureBoxMatrix[i, j].SetPictureBoxCell(sr_EmptyCellImage, false, Pawn.eType.Empty);
                         }
+
+                        pictureBoxMatrix[i, j].Click += pictureBox_Click;
                     }
                     else
                     {
-
-                        setPictureBoxCell(k_‏‏DisabledCellImage, i, j, false);
+                        pictureBoxMatrix[i, j].SetPictureBoxCell(sr_‏‏DisabledCellImage, false, Pawn.eType.Disable);
                     }
 
-                    this.Controls.Add(this.pictureBoxMatrix[i, j]);
-                    pictureBoxMatrix[i, j].Click += pictureBox_Click;
+                    Controls.Add(pictureBoxMatrix[i, j]);
+
                 }
             }
-        }
-
-        private void setPictureBoxCell(string i_PawnImage, int i_Row, int i_Col, bool i_EnableButton)
-        {
-            string fullFilePath = string.Empty;
-
-            fullFilePath = Path.Combine(r_ResourcesFolderPath, i_PawnImage);
-            pictureBoxMatrix[i_Row, i_Col].Image = Image.FromFile(fullFilePath);
-            pictureBoxMatrix[i_Row, i_Col].Enabled = i_EnableButton;
         }
         private bool diffrentPairing(int i_FirstMumber, int i_SecondNumber)
         {
