@@ -18,6 +18,7 @@ namespace EnglishCheckersWinUI
         private System.Windows.Forms.Button buttonDone;
         private bool m_FormClosedByDoneButton = false;
         private const string k_ComputerLabel = "[Computer]";
+
         public FormGameSettings()
         {
             InitializeComponent();

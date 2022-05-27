@@ -121,6 +121,7 @@ namespace EnglishCheckersWinUI
 
             this.labelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, i_Player1Sccore);
             this.labelPlayer1Name.ForeColor = Color.Blue;
+            this.labelPlayer2Name.ForeColor = Color.Black;
         }
 
         private void OnGameDetailsUpdated()
@@ -135,7 +136,6 @@ namespace EnglishCheckersWinUI
         {
             if (RecivedMovement != null)
             {
-
                 RecivedMovement.Invoke(new Movement(pictureBoxSource.PositionOnBoard, pictureBoxDestination.PositionOnBoard));
             }
 
@@ -220,7 +220,7 @@ namespace EnglishCheckersWinUI
             }
             if (GameDetailsArgs.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
             {
-                System.Threading.Thread.Sleep(200);
+                System.Threading.Thread.Sleep(120);
             }
         }
 

@@ -24,6 +24,7 @@ namespace EnglishCheckersLogic
         public event Action<Game> GameStarted;
         public event Action<Board> BoardUpdated;
         public event Action SwitchedPlayers;
+        private Random m_RandomNumber;
 
         public Game()
         {
@@ -34,6 +35,8 @@ namespace EnglishCheckersLogic
             m_PreviousPlayer = null;
             m_EatingSequence = false;
             m_FinishReason = eSessionFinishType.Won;
+            m_RandomNumber = new Random();
+
         }
 
         public void InitializeGameDetails(string i_PlayerXName, string i_PlayerOName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
@@ -157,8 +160,6 @@ namespace EnglishCheckersLogic
                 m_CurrentPlayer.CreatePossibleMoves(m_Board);
                 MoveManager(GetComputerNextMove());
             }
-
-
         }
 
         private void OnSwitchedPlayers()
@@ -226,16 +227,16 @@ namespace EnglishCheckersLogic
         {
             Movement nextComputerMove = new Movement();
             int indexInMovesArrForNextMove = 0;
-            Random randomNumber = new Random();
+
 
             if (m_CurrentPlayer.EatingPossibleMoves.Count > 0)
             {
-                indexInMovesArrForNextMove = randomNumber.Next(0, m_CurrentPlayer.EatingPossibleMoves.Count);
+                indexInMovesArrForNextMove = m_RandomNumber.Next(0, m_CurrentPlayer.EatingPossibleMoves.Count);
                 nextComputerMove = m_CurrentPlayer.EatingPossibleMoves[indexInMovesArrForNextMove];
             }
             else
             {
-                indexInMovesArrForNextMove = randomNumber.Next(0, m_CurrentPlayer.RegularPossibleMoves.Count);
+                indexInMovesArrForNextMove = m_RandomNumber.Next(0, m_CurrentPlayer.RegularPossibleMoves.Count);
                 nextComputerMove = m_CurrentPlayer.RegularPossibleMoves[indexInMovesArrForNextMove];
             }
 
