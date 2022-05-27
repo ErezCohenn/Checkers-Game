@@ -26,7 +26,13 @@ namespace EnglishCheckersWinUI
             r_EnglishCheckersLogic.GameFinshed += r_EnglishCheckersLogic_GameFinished;
             r_EnglishCheckersLogic.GameStarted += r_EnglishCheckersLogic_GameStarted;
             r_EnglishCheckersLogic.BoardUpdated += r_EnglishCheckersLogic_BoardUpdated;
+            r_EnglishCheckersLogic.SwitchedPlayers += r_EnglishCheckersLogic_SwitchedPlayers;
             r_FormGame.ShowDialog();
+        }
+
+        private void r_EnglishCheckersLogic_SwitchedPlayers()
+        {
+            r_FormGame.SwitchPlayers();
         }
 
         private void r_EnglishCheckersLogic_BoardUpdated(Board i_Board)
@@ -72,14 +78,14 @@ namespace EnglishCheckersWinUI
             if (r_EnglishCheckersLogic.IsValidMove(sender))
             {
                 r_EnglishCheckersLogic.MoveManager(sender);
-                if (!r_EnglishCheckersLogic.EatingSequence)
-                {
-                    r_FormGame.SwitchPlayers();
-                }
-                else
-                {
-                    r_FormGame.GameDetailsArgs.PreviousPlayer = r_FormGame.GameDetailsArgs.CurrentPlayer;
-                }
+                /*                if (!r_EnglishCheckersLogic.EatingSequence)
+                                {
+                                    r_FormGame.SwitchPlayers();
+                                }
+                                else
+                                {
+                                    r_FormGame.GameDetailsArgs.PreviousPlayer = r_FormGame.GameDetailsArgs.CurrentPlayer;
+                                }*/
             }
             else
             {

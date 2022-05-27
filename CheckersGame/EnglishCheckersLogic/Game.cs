@@ -23,6 +23,7 @@ namespace EnglishCheckersLogic
         public event Action<Game> GameFinshed;
         public event Action<Game> GameStarted;
         public event Action<Board> BoardUpdated;
+        public event Action SwitchedPlayers;
 
         public Game()
         {
@@ -144,9 +145,18 @@ namespace EnglishCheckersLogic
             if (!m_EatingSequence)
             {
                 switchPlayers();
+                OnSwitchedPlayers();
             }
 
             OnBoardUpdated();
+        }
+
+        private void OnSwitchedPlayers()
+        {
+            if (SwitchedPlayers != null)
+            {
+                SwitchedPlayers.Invoke();
+            }
         }
 
         private void switchPlayers()
@@ -154,6 +164,7 @@ namespace EnglishCheckersLogic
             Player playerSaver = m_CurrentPlayer;
             m_CurrentPlayer = m_PreviousPlayer;
             m_PreviousPlayer = playerSaver;
+            OnSwitchedPlayers();
         }
 
         private bool shouldBecomeAKing(Pawn i_DestinedPawnToMove)
