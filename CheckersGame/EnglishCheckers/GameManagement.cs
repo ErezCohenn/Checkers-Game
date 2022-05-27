@@ -52,7 +52,6 @@ namespace EnglishCheckersWinUI
             if (yesNoMessageBoxEventArgs.IsPressedYesInMessageBox)
             {
                 r_EnglishCheckersLogic.InitializeSession();
-                //r_EnglishCheckersLogic_GameStarted(r_EnglishCheckersLogic);
             }
             else
             {
@@ -78,14 +77,6 @@ namespace EnglishCheckersWinUI
             if (r_EnglishCheckersLogic.IsValidMove(sender))
             {
                 r_EnglishCheckersLogic.MoveManager(sender);
-                /*                if (!r_EnglishCheckersLogic.EatingSequence)
-                                {
-                                    r_FormGame.SwitchPlayers();
-                                }
-                                else
-                                {
-                                    r_FormGame.GameDetailsArgs.PreviousPlayer = r_FormGame.GameDetailsArgs.CurrentPlayer;
-                                }*/
             }
             else
             {
