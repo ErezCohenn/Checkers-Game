@@ -104,7 +104,7 @@ namespace EnglishCheckersWinUI
             {
                 for (int j = 0; j < (int)m_GameDetailsArgs.BoardSize; j++)
                 {
-                    pictureBoxBoard[i, j] = new PictureBoxCell(j, i);
+                    pictureBoxBoard[i, j] = new PictureBoxCell(i, j);
                     initializePictureBox(pictureBoxBoard[i, j]);
                     Controls.Add(pictureBoxBoard[i, j]);
                 }
