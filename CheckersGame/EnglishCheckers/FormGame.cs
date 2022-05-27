@@ -37,6 +37,7 @@ namespace EnglishCheckersWinUI
         public void SetNewSession(int i_Player1Sccore, int i_Player2Sccore, string i_CurrentPlayer)
         {
             m_GameDetailsArgs.CurrentPlayer = i_CurrentPlayer;
+            m_GameDetailsArgs.PreviousPlayer = i_CurrentPlayer == m_GameDetailsArgs.PlayerOName ? m_GameDetailsArgs.PlayerXName : m_GameDetailsArgs.PlayerOName;
             setPlayersLabels(i_Player1Sccore, i_Player2Sccore);
         }
 
@@ -107,6 +108,7 @@ namespace EnglishCheckersWinUI
                     pictureBoxBoard[i, j] = new PictureBoxCell(i, j);
                     initializePictureBox(pictureBoxBoard[i, j]);
                     Controls.Add(pictureBoxBoard[i, j]);
+                    pictureBoxBoard[i, j].Click += pictureBox_Click;
                 }
             }
         }
@@ -114,7 +116,7 @@ namespace EnglishCheckersWinUI
         private void initializePictureBox(PictureBoxCell pictureBoxCell)
         {
             pictureBoxCell.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
-            pictureBoxCell.Location = new Point(k_WidthMargin + k_PictureBoxSize * pictureBoxCell.Row, k_HeightMargin + k_PictureBoxSize * pictureBoxCell.Col);
+            pictureBoxCell.Location = new Point(k_WidthMargin + k_PictureBoxSize * pictureBoxCell.Col, k_HeightMargin + k_PictureBoxSize * pictureBoxCell.Row);
             pictureBoxCell.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
@@ -191,6 +193,8 @@ namespace EnglishCheckersWinUI
         public void UpdatePictureBoxBoard(Board i_Board)
         {
             Pawn.eType pawnType = Pawn.eType.Empty;
+            bool enablePictureBox = false;
+            string cellImage = string.Empty;
 
             for (int i = 0; i < i_Board.Size; i++)
             {
@@ -201,23 +205,27 @@ namespace EnglishCheckersWinUI
                     {
                         if (isPlayer1Pawn(pawnType))
                         {
-                            pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.RedPawn, false, pawnType);
+                            enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.OSign;
+                            cellImage = Reasources.RedPawn;
                         }
                         else if (isPlayer2Pawn(pawnType))
                         {
-                            pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.BlackPawn, true, pawnType);
+                            enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign;
+                            cellImage = Reasources.BlackPawn;
                         }
                         else
                         {
-                            pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.Empty, true, pawnType);
+                            enablePictureBox = true;
+                            cellImage = Reasources.Empty;
                         }
-
-                        pictureBoxBoard[i, j].Click += pictureBox_Click;
                     }
                     else
                     {
-                        pictureBoxBoard[i, j].SetPictureBoxCell(Reasources.Disabled, false, Pawn.eType.Disable);
+                        enablePictureBox = false;
+                        cellImage = Reasources.Disabled;
                     }
+
+                    pictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePictureBox, pawnType);
                 }
             }
         }
@@ -234,19 +242,13 @@ namespace EnglishCheckersWinUI
 
         public void SwitchPlayers()
         {
-            string playerNameSaver = null;
+            string playerNameSaver = m_GameDetailsArgs.CurrentPlayer;
 
-            if (m_GameDetailsArgs.CurrentPlayer == m_GameDetailsArgs.PreviousPlayer)
-            {
-                m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer; //== r_PlayerOName ? r_PlayerXName : r_PlayerOName;
-            }
-            else
-            {
-                playerNameSaver = m_GameDetailsArgs.CurrentPlayer;
-                m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer;
-                m_GameDetailsArgs.PreviousPlayer = playerNameSaver;
-            }
+            m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer;
+            m_GameDetailsArgs.PreviousPlayer = playerNameSaver;
+            m_GameDetailsArgs.CurrentPlayerSign = m_GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign ? Player.ePlayerSign.OSign : Player.ePlayerSign.XSign;
         }
+
         public EventGameDetailsArgs GameDetailsArgs
         {
             get

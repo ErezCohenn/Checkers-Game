@@ -10,6 +10,7 @@ namespace EnglishCheckersWinUI
         private readonly Player.ePlayerType r_PlayerOType;
         private string m_CurrentPlayer;
         private string m_PreviousPlayer;
+        private Player.ePlayerSign m_CurrentPlayerSign;
 
         public EventGameDetailsArgs(string i_PlayerOName, string i_PlayerXName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
         {
@@ -18,6 +19,7 @@ namespace EnglishCheckersWinUI
             r_BoardSize = i_BoardSize;
             r_PlayerOType = i_PlayerOType;
             m_CurrentPlayer = r_PlayerXName;
+            m_CurrentPlayerSign = Player.ePlayerSign.XSign;
             m_PreviousPlayer = r_PlayerOName;
         }
 
@@ -76,6 +78,19 @@ namespace EnglishCheckersWinUI
             set
             {
                 m_PreviousPlayer = value;
+            }
+        }
+
+        public Player.ePlayerSign CurrentPlayerSign
+        {
+            get
+            {
+                return m_CurrentPlayerSign;
+            }
+
+            set
+            {
+                m_CurrentPlayerSign = value;
             }
         }
     }
