@@ -67,8 +67,8 @@ namespace EnglishCheckersLogic
             m_PlayerO.InitializePawnsOnBoard(m_Board);
             m_CurrentPlayer = m_PlayerX;
             m_PreviousPlayer = m_PlayerO;
-            OnBoardUpdated();
             OnGameStarted();
+            OnBoardUpdated();
         }
 
         public bool IsSessionFinished()
@@ -148,6 +148,17 @@ namespace EnglishCheckersLogic
             }
 
             OnBoardUpdated();
+            if (IsSessionFinished())
+            {
+                EndGameSession();
+            }
+            else if (m_CurrentPlayer.PlayerType == Player.ePlayerType.Computer)
+            {
+                m_CurrentPlayer.CreatePossibleMoves(m_Board);
+                MoveManager(GetComputerNextMove());
+            }
+
+
         }
 
         private void OnSwitchedPlayers()

@@ -16,6 +16,7 @@ namespace EnglishCheckersWinUI
         private System.Windows.Forms.RadioButton radioButtonMediumBoardSize;
         private System.Windows.Forms.RadioButton radioButtonLargeBoardSize;
         private System.Windows.Forms.Button buttonDone;
+        private bool m_FormClosedByDoneButton = false;
         private const string k_ComputerLabel = "[Computer]";
         public FormGameSettings()
         {
@@ -69,7 +70,6 @@ namespace EnglishCheckersWinUI
             {
                 Board.eBoradSize boardSize = Board.eBoradSize.Medium;
 
-
                 if (radioButtonSmallBoardSize.Checked)
                 {
                     boardSize = Board.eBoradSize.Small;
@@ -78,7 +78,7 @@ namespace EnglishCheckersWinUI
                 {
                     boardSize = Board.eBoradSize.Medium;
                 }
-                else
+                else if (radioButtonLargeBoardSize.Checked)
                 {
                     boardSize = Board.eBoradSize.Large;
                 }
@@ -95,7 +95,24 @@ namespace EnglishCheckersWinUI
             }
             else
             {
+                m_FormClosedByDoneButton = true;
                 this.Close();
+            }
+        }
+
+        public bool FormClosedByDoneButton
+        {
+            get
+            {
+                return m_FormClosedByDoneButton;
+            }
+        }
+
+        public string ComputerLabel
+        {
+            get
+            {
+                return k_ComputerLabel;
             }
         }
     }

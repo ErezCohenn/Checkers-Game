@@ -4,7 +4,7 @@ namespace EnglishCheckersWinUI
     public class Reasources
     {
         private static readonly string sr_RedPawnImage = "RedPawn.png";
-        private static readonly string sr_RedKingImage = "RedKing.png";
+        private static readonly string sr_RedKingImage = "‏‏RedKing.png";
         private static readonly string sr_BlackPawnImage = "‏‏BlackPawn.png";
         private static readonly string sr_BlackKingImage = "‏‏BlackKing.png";
         private static readonly string sr_‏‏DisabledCellImage = "‏‏DisabledCell.png";
