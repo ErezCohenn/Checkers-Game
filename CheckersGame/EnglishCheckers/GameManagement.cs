@@ -69,7 +69,6 @@ namespace EnglishCheckersWinUI
 
         private void r_FormGame_RecivedMovment(Movement sender)
         {
-
             if (r_EnglishCheckersLogic.IsValidMove(sender))
             {
                 r_EnglishCheckersLogic.MoveManager(sender);
@@ -86,7 +85,6 @@ namespace EnglishCheckersWinUI
             {
                 MessageBox.Show(r_InvalidInputmessage, r_InvalidInputBoxtitle);
             }
-
         }
 
         /*private void playGameSession()

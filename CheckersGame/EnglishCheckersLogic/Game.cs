@@ -77,9 +77,9 @@ namespace EnglishCheckersLogic
 
         private bool hasNoAvailableMoves(Player io_PlayerToCheck)
         {
-            if (!EatingSequence)
+            if (!m_EatingSequence)
             {
-                io_PlayerToCheck.CreatePossibleMoves(m_Board);
+                m_CurrentPlayer.CreatePossibleMoves(m_Board);
             }
 
             return io_PlayerToCheck.EatingPossibleMoves.Count == 0 && io_PlayerToCheck.RegularPossibleMoves.Count == 0;
@@ -223,9 +223,16 @@ namespace EnglishCheckersLogic
 
         public bool IsValidMove(Movement i_playerInputedMove)
         {
-            List<Movement> moveArrayToSearch = (m_CurrentPlayer.EatingPossibleMoves.Count > 0) ? m_CurrentPlayer.EatingPossibleMoves : m_CurrentPlayer.RegularPossibleMoves;
+            List<Movement> moveArrayToSearch = null; ;
+
+            if (!EatingSequence)
+            {
+                m_CurrentPlayer.CreatePossibleMoves(m_Board);
+            }
+            moveArrayToSearch = (m_CurrentPlayer.EatingPossibleMoves.Count > 0) ? m_CurrentPlayer.EatingPossibleMoves : m_CurrentPlayer.RegularPossibleMoves;
 
             return i_playerInputedMove == null || SearchForValidMoveInMovesArr(i_playerInputedMove, moveArrayToSearch);
+
         }
 
         public bool SearchForValidMoveInMovesArr(Movement i_PlayerDesiredMove, List<Movement> i_MovesArr)
