@@ -36,7 +36,7 @@ namespace EnglishCheckersLogic
             m_FinishReason = eSessionFinishType.Won;
         }
 
-        public void InitializeGameDetails(string i_PlayerOName, string i_PlayerXName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
+        public void InitializeGameDetails(string i_PlayerXName, string i_PlayerOName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
         {
             m_PlayerO = new Player(i_PlayerOType, i_PlayerOName, Player.ePlayerSign.OSign, i_BoardSize);
             m_PlayerX = new Player(Player.ePlayerType.Human, i_PlayerXName, Player.ePlayerSign.XSign, i_BoardSize);
@@ -145,7 +145,6 @@ namespace EnglishCheckersLogic
             if (!m_EatingSequence)
             {
                 switchPlayers();
-                OnSwitchedPlayers();
             }
 
             OnBoardUpdated();
