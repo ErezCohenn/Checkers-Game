@@ -45,7 +45,7 @@ namespace EnglishCheckersWinUI
             DialogResult userChoice = new DialogResult();
             StringBuilder message = new StringBuilder();
             YesNoMessageBoxEventArgs yesNoMessageBoxEventArgs = null;
-            bool wantToQuit = false;
+            bool wantToPlayAnotherSession = false;
 
             if (i_GameLogic.FinishReason == Game.eSessionFinishType.Draw)
             {
@@ -59,11 +59,9 @@ namespace EnglishCheckersWinUI
             message.Append(Environment.NewLine);
             message.Append("Another Round?");
             userChoice = MessageBox.Show(message.ToString(), "Damka", MessageBoxButtons.YesNo);
-            wantToQuit = userChoice == DialogResult.No;
-            yesNoMessageBoxEventArgs = new YesNoMessageBoxEventArgs(wantToQuit);
+            wantToPlayAnotherSession = userChoice == DialogResult.Yes;
+            yesNoMessageBoxEventArgs = new YesNoMessageBoxEventArgs(wantToPlayAnotherSession);
             OnYesNoMessageBoxClicked(yesNoMessageBoxEventArgs);
-
-
         }
 
         private void OnYesNoMessageBoxClicked(YesNoMessageBoxEventArgs i_YesNoMessageBoxEventArgs)
@@ -72,17 +70,6 @@ namespace EnglishCheckersWinUI
             {
                 YesNoMessageBoxClicked.Invoke(this, i_YesNoMessageBoxEventArgs);
             }
-        }
-
-        private void FormGameSettings_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            /*      if (e.CloseReason == CloseReason.UserClosing)
-                  {
-                      this.Close();
-                  }*/
-
-            initializeForm();
-            OnGameDetailsUpdated();
         }
 
         private void initializeForm()
@@ -94,7 +81,9 @@ namespace EnglishCheckersWinUI
 
         private void initializeGameDetailsArgs()
         {
-            m_GameDetailsArgs = new EventGameDetailsArgs(m_FormGameSettings.XPlayerName, m_FormGameSettings.OPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
+            string oPlayerName = m_FormGameSettings.OPlayerName == m_FormGameSettings.ComputerLabel ? Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer) : m_FormGameSettings.OPlayerName;
+
+            m_GameDetailsArgs = new EventGameDetailsArgs(m_FormGameSettings.XPlayerName, oPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
         }
 
         private void initializePictureBoxBoard()
@@ -225,7 +214,13 @@ namespace EnglishCheckersWinUI
                     }
 
                     pictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePictureBox, pawnType);
+
                 }
+
+            }
+            if (GameDetailsArgs.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
+            {
+                System.Threading.Thread.Sleep(200);
             }
         }
 
@@ -246,6 +241,20 @@ namespace EnglishCheckersWinUI
             m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer;
             m_GameDetailsArgs.PreviousPlayer = playerNameSaver;
             m_GameDetailsArgs.CurrentPlayerSign = m_GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign ? Player.ePlayerSign.OSign : Player.ePlayerSign.XSign;
+            this.labelPlayer1Name.ForeColor = this.labelPlayer1Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
+            this.labelPlayer2Name.ForeColor = this.labelPlayer2Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
+        }
+        private void FormGameSettings_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            m_FormGameSettings = sender as FormGameSettings;
+
+            if (e.CloseReason == CloseReason.UserClosing && !m_FormGameSettings.FormClosedByDoneButton)
+            {
+                this.Close();
+            }
+
+            initializeForm();
+            OnGameDetailsUpdated();
         }
 
         public EventGameDetailsArgs GameDetailsArgs

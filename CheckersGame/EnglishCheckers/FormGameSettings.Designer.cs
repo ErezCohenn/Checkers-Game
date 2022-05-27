@@ -109,6 +109,7 @@ namespace EnglishCheckersWinUI
             // radioButtonMediumBoardSize
             // 
             this.radioButtonMediumBoardSize.AutoSize = true;
+            this.radioButtonMediumBoardSize.Checked = true;
             this.radioButtonMediumBoardSize.Location = new System.Drawing.Point(127, 46);
             this.radioButtonMediumBoardSize.Name = "radioButtonMediumBoardSize";
             this.radioButtonMediumBoardSize.Size = new System.Drawing.Size(59, 21);
@@ -168,7 +169,6 @@ namespace EnglishCheckersWinUI
             this.Text = "Game Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
         #endregion
     }

@@ -52,7 +52,7 @@ namespace EnglishCheckersWinUI
             if (yesNoMessageBoxEventArgs.IsPressedYesInMessageBox)
             {
                 r_EnglishCheckersLogic.InitializeSession();
-                r_EnglishCheckersLogic_GameStarted(r_EnglishCheckersLogic);
+                //r_EnglishCheckersLogic_GameStarted(r_EnglishCheckersLogic);
             }
             else
             {
