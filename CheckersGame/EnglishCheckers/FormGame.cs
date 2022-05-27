@@ -36,8 +36,7 @@ namespace EnglishCheckersWinUI
 
         public void SetNewSession(int i_Player1Sccore, int i_Player2Sccore, string i_CurrentPlayer)
         {
-            m_GameDetailsArgs.CurrentPlayer = i_CurrentPlayer;
-            m_GameDetailsArgs.PreviousPlayer = i_CurrentPlayer == m_GameDetailsArgs.PlayerOName ? m_GameDetailsArgs.PlayerXName : m_GameDetailsArgs.PlayerOName;
+            m_GameDetailsArgs.SetPlayers(i_CurrentPlayer);
             setPlayersLabels(i_Player1Sccore, i_Player2Sccore);
         }
 
@@ -95,7 +94,7 @@ namespace EnglishCheckersWinUI
 
         private void initializeGameDetailsArgs()
         {
-            m_GameDetailsArgs = new EventGameDetailsArgs(m_FormGameSettings.OPlayerName, m_FormGameSettings.XPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
+            m_GameDetailsArgs = new EventGameDetailsArgs(m_FormGameSettings.XPlayerName, m_FormGameSettings.OPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
         }
 
         private void initializePictureBoxBoard()
@@ -124,15 +123,15 @@ namespace EnglishCheckersWinUI
         {
             if (m_GameDetailsArgs.PlayerOName == "[Computer]")
             {
-                this.labelPlayer1Name.Text = string.Format("{0}: {1}", Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer), i_Player1Sccore);
+                this.labelPlayer2Name.Text = string.Format("{0}: {1}", Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer), i_Player2Sccore);
             }
             else
             {
-                this.labelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerOName, i_Player1Sccore);
+                this.labelPlayer2Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerOName, i_Player2Sccore);
             }
 
-            this.labelPlayer2Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, i_Player2Sccore);
-            this.labelPlayer2Name.ForeColor = Color.Blue;
+            this.labelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, i_Player1Sccore);
+            this.labelPlayer1Name.ForeColor = Color.Blue;
         }
 
         private void OnGameDetailsUpdated()
@@ -205,13 +204,13 @@ namespace EnglishCheckersWinUI
                     {
                         if (isPlayer1Pawn(pawnType))
                         {
-                            enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.OSign;
-                            cellImage = Reasources.RedPawn;
+                            enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign;
+                            cellImage = pawnType == Pawn.eType.XPawn ? Reasources.BlackPawn : Reasources.BlackKingPawn;
                         }
                         else if (isPlayer2Pawn(pawnType))
                         {
-                            enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign;
-                            cellImage = Reasources.BlackPawn;
+                            enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.OSign;
+                            cellImage = pawnType == Pawn.eType.OPawn ? Reasources.RedPawn : Reasources.RedKingPawn;
                         }
                         else
                         {
@@ -230,12 +229,12 @@ namespace EnglishCheckersWinUI
             }
         }
 
-        private bool isPlayer1Pawn(Pawn.eType i_PawnType)
+        private bool isPlayer2Pawn(Pawn.eType i_PawnType)
         {
             return i_PawnType == Pawn.eType.OKing || i_PawnType == Pawn.eType.OPawn;
         }
 
-        private bool isPlayer2Pawn(Pawn.eType i_PawnType)
+        private bool isPlayer1Pawn(Pawn.eType i_PawnType)
         {
             return i_PawnType == Pawn.eType.XKing || i_PawnType == Pawn.eType.XPawn;
         }
