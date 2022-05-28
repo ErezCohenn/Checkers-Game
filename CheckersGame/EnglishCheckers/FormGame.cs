@@ -13,15 +13,19 @@ namespace EnglishCheckersWinUI
         private const int k_HeightExtention = 100;
         private const int k_HeightMargin = 60;
         private const int k_WidthMargin = 5;
-        private PictureBoxCell[,] pictureBoxBoard;
-        private PictureBoxCell pictureBoxSource;
-        private PictureBoxCell pictureBoxDestination;
+        private const int k_SleepAfterMovement = 120;
+        private PictureBoxCell[,] m_PictureBoxBoard;
+        private PictureBoxCell m_PictureBoxSource;
+        private PictureBoxCell m_PictureBoxDestination;
         private System.Windows.Forms.Label labelPlayer1Name;
         private System.Windows.Forms.Label labelPlayer2Name;
         private FormGameSettings m_FormGameSettings;
         private EventGameDetailsArgs m_GameDetailsArgs;
+
         public EventHandler GameDetailsUpdated;
+
         public EventHandler YesNoMessageBoxClicked;
+
         public event Action<Movement> RecivedMovement;
 
         public FormGame()
@@ -29,7 +33,7 @@ namespace EnglishCheckersWinUI
             InitializeComponent();
         }
 
-        private void FormGame_Load(object sender, System.EventArgs e)
+        private void FormGame_Load(object sender, EventArgs e)
         {
             m_FormGameSettings.ShowDialog();
         }
@@ -58,7 +62,7 @@ namespace EnglishCheckersWinUI
 
             message.Append(Environment.NewLine);
             message.Append("Another Round?");
-            userChoice = MessageBox.Show(message.ToString(), "Damka", MessageBoxButtons.YesNo);
+            userChoice = MessageBox.Show(message.ToString(), "Damka", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             wantToPlayAnotherSession = userChoice == DialogResult.Yes;
             yesNoMessageBoxEventArgs = new YesNoMessageBoxEventArgs(wantToPlayAnotherSession);
             OnYesNoMessageBoxClicked(yesNoMessageBoxEventArgs);
@@ -88,15 +92,15 @@ namespace EnglishCheckersWinUI
 
         private void initializePictureBoxBoard()
         {
-            pictureBoxBoard = new PictureBoxCell[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
+            m_PictureBoxBoard = new PictureBoxCell[(int)m_GameDetailsArgs.BoardSize, (int)m_GameDetailsArgs.BoardSize];
             for (int i = 0; i < (int)m_GameDetailsArgs.BoardSize; i++)
             {
                 for (int j = 0; j < (int)m_GameDetailsArgs.BoardSize; j++)
                 {
-                    pictureBoxBoard[i, j] = new PictureBoxCell(i, j);
-                    initializePictureBox(pictureBoxBoard[i, j]);
-                    Controls.Add(pictureBoxBoard[i, j]);
-                    pictureBoxBoard[i, j].Click += pictureBox_Click;
+                    m_PictureBoxBoard[i, j] = new PictureBoxCell(i, j);
+                    initializePictureBox(m_PictureBoxBoard[i, j]);
+                    Controls.Add(m_PictureBoxBoard[i, j]);
+                    m_PictureBoxBoard[i, j].Click += pictureBox_Click;
                 }
             }
         }
@@ -104,7 +108,7 @@ namespace EnglishCheckersWinUI
         private void initializePictureBox(PictureBoxCell pictureBoxCell)
         {
             pictureBoxCell.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
-            pictureBoxCell.Location = new Point(k_WidthMargin + k_PictureBoxSize * pictureBoxCell.Col, k_HeightMargin + k_PictureBoxSize * pictureBoxCell.Row);
+            pictureBoxCell.Location = new Point(k_WidthMargin + (k_PictureBoxSize * pictureBoxCell.Col), k_HeightMargin + (k_PictureBoxSize * pictureBoxCell.Row));
             pictureBoxCell.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
@@ -136,9 +140,8 @@ namespace EnglishCheckersWinUI
         {
             if (RecivedMovement != null)
             {
-                RecivedMovement.Invoke(new Movement(pictureBoxSource.PositionOnBoard, pictureBoxDestination.PositionOnBoard));
+                RecivedMovement.Invoke(new Movement(m_PictureBoxSource.PositionOnBoard, m_PictureBoxDestination.PositionOnBoard));
             }
-
         }
 
         private void initializeFormSize()
@@ -150,11 +153,11 @@ namespace EnglishCheckersWinUI
         {
             PictureBoxCell pictureBoxClicked = sender as PictureBoxCell;
 
-            if (pictureBoxSource == null)
+            if (m_PictureBoxSource == null)
             {
                 if (pictureBoxClicked.Name != Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty))
                 {
-                    pictureBoxSource = pictureBoxClicked;
+                    m_PictureBoxSource = pictureBoxClicked;
                     pictureBoxClicked.BorderStyle = BorderStyle.Fixed3D;
                 }
             }
@@ -162,18 +165,18 @@ namespace EnglishCheckersWinUI
             {
                 if (pictureBoxClicked.Name == Enum.GetName(typeof(Pawn.eType), Pawn.eType.Empty))
                 {
-                    pictureBoxDestination = pictureBoxClicked;
+                    m_PictureBoxDestination = pictureBoxClicked;
                     pictureBoxClicked.BorderStyle = BorderStyle.Fixed3D;
                     OnReceivedMovement();
                     pictureBoxClicked.BorderStyle = BorderStyle.None;
-                    pictureBoxSource.BorderStyle = BorderStyle.None;
-                    pictureBoxDestination = null;
-                    pictureBoxSource = null;
+                    m_PictureBoxSource.BorderStyle = BorderStyle.None;
+                    m_PictureBoxDestination = null;
+                    m_PictureBoxSource = null;
                 }
-                else if (pictureBoxClicked == pictureBoxSource)
+                else if (pictureBoxClicked == m_PictureBoxSource)
                 {
                     pictureBoxClicked.BorderStyle = BorderStyle.None;
-                    pictureBoxSource = null;
+                    m_PictureBoxSource = null;
                 }
             }
         }
@@ -213,14 +216,13 @@ namespace EnglishCheckersWinUI
                         cellImage = Reasources.Disabled;
                     }
 
-                    pictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePictureBox, pawnType);
-
+                    m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePictureBox, pawnType);
                 }
-
             }
+
             if (GameDetailsArgs.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
             {
-                System.Threading.Thread.Sleep(120);
+                System.Threading.Thread.Sleep(k_SleepAfterMovement);
             }
         }
 
@@ -244,11 +246,12 @@ namespace EnglishCheckersWinUI
             this.labelPlayer1Name.ForeColor = this.labelPlayer1Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
             this.labelPlayer2Name.ForeColor = this.labelPlayer2Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
         }
+
         private void FormGameSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
             m_FormGameSettings = sender as FormGameSettings;
 
-            if (e.CloseReason == CloseReason.UserClosing && !m_FormGameSettings.FormClosedByDoneButton)
+            if (e.CloseReason == CloseReason.UserClosing && !m_FormGameSettings.IsFormClosedByDoneButton)
             {
                 this.Close();
             }

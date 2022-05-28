@@ -1,7 +1,6 @@
-﻿
-namespace EnglishCheckersWinUI
+﻿namespace EnglishCheckersWinUI
 {
-    partial class FormGameSettings
+    public partial class FormGameSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -18,6 +17,7 @@ namespace EnglishCheckersWinUI
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -146,10 +146,11 @@ namespace EnglishCheckersWinUI
             // 
             // FormGameSettings
             // 
+            this.AcceptButton = this.buttonDone;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(312, 243);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(332, 253);
             this.Controls.Add(this.buttonDone);
             this.Controls.Add(this.radioButtonLargeBoardSize);
             this.Controls.Add(this.radioButtonMediumBoardSize);
@@ -160,7 +161,7 @@ namespace EnglishCheckersWinUI
             this.Controls.Add(this.labelPlayer1);
             this.Controls.Add(this.labelPlayers);
             this.Controls.Add(this.labelBoardSize);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormGameSettings";
@@ -169,6 +170,7 @@ namespace EnglishCheckersWinUI
             this.Text = "Game Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
         #endregion
     }

@@ -20,7 +20,6 @@
             r_GameBoard = new Pawn.eType[r_Size, r_Size];
             r_FirstRow = 0;
             r_LastRow = r_Size - 1;
-
         }
 
         public static bool IsDiffrentPairing(int i_FirstNumber, int i_SecondNumber)

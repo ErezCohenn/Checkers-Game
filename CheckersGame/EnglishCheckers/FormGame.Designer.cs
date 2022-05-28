@@ -1,6 +1,6 @@
 ﻿namespace EnglishCheckersWinUI
 {
-    partial class FormGame
+    public partial class FormGame
     {
         /// <summary>
         /// Required designer variable.
@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -39,7 +40,7 @@
             this.labelPlayer1Name.AutoSize = true;
             this.labelPlayer1Name.Location = new System.Drawing.Point(29, 28);
             this.labelPlayer1Name.Name = "labelPlayer1Name";
-            this.labelPlayer1Name.Size = new System.Drawing.Size(103, 17);
+            this.labelPlayer1Name.Size = new System.Drawing.Size(110, 20);
             this.labelPlayer1Name.TabIndex = 0;
             this.labelPlayer1Name.Text = "Player 1: score";
             // 
@@ -49,7 +50,7 @@
             this.labelPlayer2Name.AutoSize = true;
             this.labelPlayer2Name.Location = new System.Drawing.Point(138, 28);
             this.labelPlayer2Name.Name = "labelPlayer2Name";
-            this.labelPlayer2Name.Size = new System.Drawing.Size(103, 17);
+            this.labelPlayer2Name.Size = new System.Drawing.Size(110, 20);
             this.labelPlayer2Name.TabIndex = 1;
             this.labelPlayer2Name.Text = "Player 2: score";
             // 
@@ -83,8 +84,6 @@
             this.Load += new System.EventHandler(this.FormGame_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
-
         }
         #endregion
     }

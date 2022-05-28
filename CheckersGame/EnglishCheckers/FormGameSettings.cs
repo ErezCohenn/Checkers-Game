@@ -6,6 +6,8 @@ namespace EnglishCheckersWinUI
 {
     public partial class FormGameSettings : Form
     {
+        private const int k_MaxNameLength = 20;
+        private const string k_ComputerLabel = "[Computer]";
         private System.Windows.Forms.Label labelBoardSize;
         private System.Windows.Forms.Label labelPlayers;
         private System.Windows.Forms.Label labelPlayer1;
@@ -17,7 +19,6 @@ namespace EnglishCheckersWinUI
         private System.Windows.Forms.RadioButton radioButtonLargeBoardSize;
         private System.Windows.Forms.Button buttonDone;
         private bool m_FormClosedByDoneButton = false;
-        private const string k_ComputerLabel = "[Computer]";
 
         public FormGameSettings()
         {
@@ -46,7 +47,6 @@ namespace EnglishCheckersWinUI
             {
                 return textButtenXPlayerName.Text;
             }
-
         }
 
         public string OPlayerName
@@ -90,9 +90,11 @@ namespace EnglishCheckersWinUI
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textButtenXPlayerName.Text) || string.IsNullOrEmpty(textButtonOPlayerName.Text))
+            string errorPlayerNameMessage = string.Empty;
+
+            if (!isValidName(textButtenXPlayerName.Text, ref errorPlayerNameMessage) || !isValidName(textButtonOPlayerName.Text, ref errorPlayerNameMessage))
             {
-                MessageBox.Show("Error: A player name cannot be empty!");
+                MessageBox.Show(errorPlayerNameMessage);
             }
             else
             {
@@ -101,7 +103,35 @@ namespace EnglishCheckersWinUI
             }
         }
 
-        public bool FormClosedByDoneButton
+        private bool isValidName(string i_PlayerName, ref string o_ErrorPlayerNameMessage)
+        {
+            bool validName = true;
+
+            if (string.IsNullOrEmpty(i_PlayerName))
+            {
+                validName = false;
+                o_ErrorPlayerNameMessage = "Error: Player name is empty!";
+            }
+
+            if (i_PlayerName.Length > k_MaxNameLength)
+            {
+                validName = false;
+                o_ErrorPlayerNameMessage = "Error: Player name length is too long! The max length is 20 letters";
+            }
+
+            for (int i = 0; i < i_PlayerName.Length && validName; i++)
+            {
+                if (char.IsWhiteSpace(i_PlayerName[i]))
+                {
+                    validName = false;
+                    o_ErrorPlayerNameMessage = "Error: Player name cannot include spaces!";
+                }
+            }
+
+            return validName;
+        }
+
+        public bool IsFormClosedByDoneButton
         {
             get
             {

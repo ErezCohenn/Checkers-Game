@@ -18,13 +18,18 @@ namespace EnglishCheckersLogic
         private Board m_Board;
         private Player m_CurrentPlayer;
         private Player m_PreviousPlayer;
+        private Movement m_ComputerMove;
         private bool m_EatingSequence;
         private eSessionFinishType m_FinishReason;
-        public event Action<Game> GameFinshed;
-        public event Action<Game> GameStarted;
-        public event Action<Board> BoardUpdated;
-        public event Action SwitchedPlayers;
         private Random m_RandomNumber;
+
+        public event Action<Game> GameFinshed;
+
+        public event Action<Game> GameStarted;
+
+        public event Action<Board> BoardUpdated;
+
+        public event Action SwitchedPlayers;
 
         public Game()
         {
@@ -33,18 +38,28 @@ namespace EnglishCheckersLogic
             m_Board = null;
             m_CurrentPlayer = null;
             m_PreviousPlayer = null;
+            m_ComputerMove = null;
             m_EatingSequence = false;
             m_FinishReason = eSessionFinishType.Won;
             m_RandomNumber = new Random();
-
         }
 
-        public void InitializeGameDetails(string i_PlayerXName, string i_PlayerOName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
+        public void InitializeGame(string i_PlayerXName, string i_PlayerOName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
         {
+            initializeGameDetails(i_PlayerXName, i_PlayerOName, i_BoardSize, i_PlayerOType);
+            InitializeSession();
+        }
+
+        private void initializeGameDetails(string i_PlayerXName, string i_PlayerOName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
+        {
+            if (i_PlayerOType == Player.ePlayerType.Computer)
+            {
+                m_ComputerMove = new Movement();
+            }
+
             m_PlayerO = new Player(i_PlayerOType, i_PlayerOName, Player.ePlayerSign.OSign, i_BoardSize);
             m_PlayerX = new Player(Player.ePlayerType.Human, i_PlayerXName, Player.ePlayerSign.XSign, i_BoardSize);
             m_Board = new Board(i_BoardSize);
-            InitializeSession();
         }
 
         private void OnGameStarted()
@@ -74,22 +89,27 @@ namespace EnglishCheckersLogic
             OnBoardUpdated();
         }
 
-        public bool IsSessionFinished()
+        private bool isSessionFinished()
         {
             return m_CurrentPlayer.NoPawnsLeft() || hasNoAvailableMoves(m_CurrentPlayer);
         }
 
         private bool hasNoAvailableMoves(Player io_PlayerToCheck)
         {
-            if (!m_EatingSequence)
-            {
-                m_CurrentPlayer.CreatePossibleMoves(m_Board);
-            }
+            createPossibleMoves();
 
             return io_PlayerToCheck.EatingPossibleMoves.Count == 0 && io_PlayerToCheck.RegularPossibleMoves.Count == 0;
         }
 
-        public void EndGameSession()
+        private void createPossibleMoves()
+        {
+            if (!m_EatingSequence)
+            {
+                m_CurrentPlayer.CreatePossibleMoves(m_Board);
+            }
+        }
+
+        private void endGameSession()
         {
             if (m_FinishReason.Equals(eSessionFinishType.Quit))
             {
@@ -116,50 +136,61 @@ namespace EnglishCheckersLogic
             }
         }
 
-        public void MoveManager(Movement io_NextMove)
+        public bool MoveManager(Movement io_NextMove)
         {
-            Pawn destinedPawnToMove = m_CurrentPlayer.SearchPawnByLocation(io_NextMove.CurrentPosition);
+            Pawn destinedPawnToMove = null;
             bool ateInLastMove = false;
+            bool validMove = true;
 
-            ExecuteMove(io_NextMove, destinedPawnToMove, ref ateInLastMove);
-            if (m_EatingSequence)
+            if (!isValidMove(io_NextMove))
             {
-                m_EatingSequence = false;
+                validMove = false;
             }
-
-            if (shouldBecomeAKing(destinedPawnToMove))
+            else
             {
-                destinedPawnToMove.Type = (destinedPawnToMove.Type == Pawn.eType.OPawn) ? Pawn.eType.OKing : Pawn.eType.XKing;
-                destinedPawnToMove.Value = Pawn.eValue.King;
-                m_Board.SetCellValue(destinedPawnToMove.Location, destinedPawnToMove.Type);
-            }
-
-            if (ateInLastMove)
-            {
-                m_CurrentPlayer.RegularPossibleMoves.Clear();
-                m_CurrentPlayer.EatingPossibleMoves.Clear();
-                m_CurrentPlayer.AddOptionalMoveToMovesArray(m_Board, destinedPawnToMove);
-                if (m_CurrentPlayer.EatingPossibleMoves.Count > 0)
+                destinedPawnToMove = m_CurrentPlayer.SearchPawnByLocation(io_NextMove.CurrentPosition);
+                executeMove(io_NextMove, destinedPawnToMove, ref ateInLastMove);
+                if (m_EatingSequence)
                 {
-                    m_EatingSequence = true;
+                    m_EatingSequence = false;
+                }
+
+                if (shouldBecomeAKing(destinedPawnToMove))
+                {
+                    destinedPawnToMove.Type = (destinedPawnToMove.Type == Pawn.eType.OPawn) ? Pawn.eType.OKing : Pawn.eType.XKing;
+                    destinedPawnToMove.Value = Pawn.eValue.King;
+                    m_Board.SetCellValue(destinedPawnToMove.Location, destinedPawnToMove.Type);
+                }
+
+                if (ateInLastMove)
+                {
+                    m_CurrentPlayer.RegularPossibleMoves.Clear();
+                    m_CurrentPlayer.EatingPossibleMoves.Clear();
+                    m_CurrentPlayer.AddOptionalMoveToMovesArray(m_Board, destinedPawnToMove);
+                    if (m_CurrentPlayer.EatingPossibleMoves.Count > 0)
+                    {
+                        m_EatingSequence = true;
+                    }
+                }
+
+                if (!m_EatingSequence)
+                {
+                    switchPlayers();
+                }
+
+                OnBoardUpdated();
+                if (isSessionFinished())
+                {
+                    endGameSession();
+                }
+                else if (m_CurrentPlayer.PlayerType == Player.ePlayerType.Computer)
+                {
+                    m_CurrentPlayer.CreatePossibleMoves(m_Board);
+                    MoveManager(m_ComputerMove);
                 }
             }
 
-            if (!m_EatingSequence)
-            {
-                switchPlayers();
-            }
-
-            OnBoardUpdated();
-            if (IsSessionFinished())
-            {
-                EndGameSession();
-            }
-            else if (m_CurrentPlayer.PlayerType == Player.ePlayerType.Computer)
-            {
-                m_CurrentPlayer.CreatePossibleMoves(m_Board);
-                MoveManager(GetComputerNextMove());
-            }
+            return validMove;
         }
 
         private void OnSwitchedPlayers()
@@ -173,6 +204,7 @@ namespace EnglishCheckersLogic
         private void switchPlayers()
         {
             Player playerSaver = m_CurrentPlayer;
+
             m_CurrentPlayer = m_PreviousPlayer;
             m_PreviousPlayer = playerSaver;
             OnSwitchedPlayers();
@@ -194,7 +226,7 @@ namespace EnglishCheckersLogic
             return canBecomeAKing;
         }
 
-        public void ExecuteMove(Movement i_NextMoveToExecute, Pawn io_PawnToMove, ref bool io_AteInCurrentMove)
+        private void executeMove(Movement i_NextMoveToExecute, Pawn io_PawnToMove, ref bool o_AteInCurrentMove)
         {
             Position eatenPawnLocation = null;
             Position directionToMove = Position.Substract(i_NextMoveToExecute.NextPosition, i_NextMoveToExecute.CurrentPosition);
@@ -204,7 +236,7 @@ namespace EnglishCheckersLogic
             {
                 eatenPawnLocation = new Position(i_NextMoveToExecute.CurrentPosition.Row + (directionToMove.Row / 2), i_NextMoveToExecute.CurrentPosition.Col + (directionToMove.Col / 2));
                 removePawnFromBoard(m_PreviousPlayer, eatenPawnLocation);
-                io_AteInCurrentMove = true;
+                o_AteInCurrentMove = true;
             }
 
             updatePawnOnBoard(io_PawnToMove, i_NextMoveToExecute);
@@ -223,38 +255,30 @@ namespace EnglishCheckersLogic
             io_PreviousPlayer.RemovePawnFromPawnsArray(i_EatenPawnLocation);
         }
 
-        public Movement GetComputerNextMove()
+        private void setComputerNextMove()
         {
-            Movement nextComputerMove = new Movement();
             int indexInMovesArrForNextMove = 0;
-
 
             if (m_CurrentPlayer.EatingPossibleMoves.Count > 0)
             {
                 indexInMovesArrForNextMove = m_RandomNumber.Next(0, m_CurrentPlayer.EatingPossibleMoves.Count);
-                nextComputerMove = m_CurrentPlayer.EatingPossibleMoves[indexInMovesArrForNextMove];
+                m_ComputerMove = m_CurrentPlayer.EatingPossibleMoves[indexInMovesArrForNextMove];
             }
             else
             {
                 indexInMovesArrForNextMove = m_RandomNumber.Next(0, m_CurrentPlayer.RegularPossibleMoves.Count);
-                nextComputerMove = m_CurrentPlayer.RegularPossibleMoves[indexInMovesArrForNextMove];
+                m_ComputerMove = m_CurrentPlayer.RegularPossibleMoves[indexInMovesArrForNextMove];
             }
-
-            return nextComputerMove;
         }
 
-        public bool IsValidMove(Movement i_playerInputedMove)
+        private bool isValidMove(Movement i_PlayerInputedMove)
         {
-            List<Movement> moveArrayToSearch = null; ;
+            List<Movement> moveArrayToSearch = null;
 
-            if (!EatingSequence)
-            {
-                m_CurrentPlayer.CreatePossibleMoves(m_Board);
-            }
+            createPossibleMoves();
             moveArrayToSearch = (m_CurrentPlayer.EatingPossibleMoves.Count > 0) ? m_CurrentPlayer.EatingPossibleMoves : m_CurrentPlayer.RegularPossibleMoves;
 
-            return i_playerInputedMove == null || SearchForValidMoveInMovesArr(i_playerInputedMove, moveArrayToSearch);
-
+            return i_PlayerInputedMove == null || SearchForValidMoveInMovesArr(i_PlayerInputedMove, moveArrayToSearch);
         }
 
         public bool SearchForValidMoveInMovesArr(Movement i_PlayerDesiredMove, List<Movement> i_MovesArr)

@@ -22,6 +22,7 @@ namespace EnglishCheckersWinUI
                 return m_PositionOnBoard;
             }
         }
+
         public void SetPictureBoxCell(string i_PawnImage, bool i_Enable, Pawn.eType i_CellType)
         {
             string fullFilePath = Path.Combine(Reasources.ResourcesFolderPath, i_PawnImage);
@@ -45,6 +46,5 @@ namespace EnglishCheckersWinUI
                 return m_PositionOnBoard.Col;
             }
         }
-
     }
 }

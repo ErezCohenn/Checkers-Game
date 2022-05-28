@@ -1,5 +1,6 @@
 ﻿using EnglishCheckersLogic;
 using System;
+
 namespace EnglishCheckersWinUI
 {
     public class EventGameDetailsArgs : EventArgs
