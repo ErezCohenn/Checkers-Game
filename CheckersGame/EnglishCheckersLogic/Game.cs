@@ -185,7 +185,7 @@ namespace EnglishCheckersLogic
                 }
                 else if (m_CurrentPlayer.PlayerType == Player.ePlayerType.Computer)
                 {
-                    m_CurrentPlayer.CreatePossibleMoves(m_Board);
+                    setComputerNextMove();
                     MoveManager(m_ComputerMove);
                 }
             }
@@ -266,6 +266,7 @@ namespace EnglishCheckersLogic
             }
             else
             {
+                createPossibleMoves();
                 indexInMovesArrForNextMove = m_RandomNumber.Next(0, m_CurrentPlayer.RegularPossibleMoves.Count);
                 m_ComputerMove = m_CurrentPlayer.RegularPossibleMoves[indexInMovesArrForNextMove];
             }
@@ -278,10 +279,10 @@ namespace EnglishCheckersLogic
             createPossibleMoves();
             moveArrayToSearch = (m_CurrentPlayer.EatingPossibleMoves.Count > 0) ? m_CurrentPlayer.EatingPossibleMoves : m_CurrentPlayer.RegularPossibleMoves;
 
-            return i_PlayerInputedMove == null || SearchForValidMoveInMovesArr(i_PlayerInputedMove, moveArrayToSearch);
+            return i_PlayerInputedMove == null || searchForValidMoveInMovesArr(i_PlayerInputedMove, moveArrayToSearch);
         }
 
-        public bool SearchForValidMoveInMovesArr(Movement i_PlayerDesiredMove, List<Movement> i_MovesArr)
+        private bool searchForValidMoveInMovesArr(Movement i_PlayerDesiredMove, List<Movement> i_MovesArr)
         {
             bool nextDesiredMoveFound = false;
 
