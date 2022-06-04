@@ -1,5 +1,5 @@
-﻿using EnglishCheckersLogic;
-using System;
+﻿using System;
+using EnglishCheckersLogic;
 
 namespace EnglishCheckersWinUI
 {
