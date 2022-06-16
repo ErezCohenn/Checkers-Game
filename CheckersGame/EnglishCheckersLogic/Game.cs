@@ -23,7 +23,7 @@ namespace EnglishCheckersLogic
         private eSessionFinishType m_FinishReason;
         private Random m_RandomNumber;
 
-        public event Action<Game> GameFinshed;
+        public event Action<Game> GameFinished;
 
         public event Action<Game> GameStarted;
 
@@ -130,9 +130,9 @@ namespace EnglishCheckersLogic
 
         private void OnGameFinished()
         {
-            if (GameFinshed != null)
+            if (GameFinished != null)
             {
-                GameFinshed.Invoke(this);
+                GameFinished.Invoke(this);
             }
         }
 

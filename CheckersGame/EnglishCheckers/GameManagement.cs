@@ -24,7 +24,7 @@ namespace EnglishCheckersWinUI
 
         private void listenToGameLogicEvents()
         {
-            r_EnglishCheckersLogic.GameFinshed += r_EnglishCheckersLogic_GameFinished;
+            r_EnglishCheckersLogic.GameFinished += r_EnglishCheckersLogic_GameFinished;
             r_EnglishCheckersLogic.GameStarted += r_EnglishCheckersLogic_GameStarted;
             r_EnglishCheckersLogic.BoardUpdated += r_EnglishCheckersLogic_BoardUpdated;
             r_EnglishCheckersLogic.SwitchedPlayers += r_EnglishCheckersLogic_SwitchedPlayers;
