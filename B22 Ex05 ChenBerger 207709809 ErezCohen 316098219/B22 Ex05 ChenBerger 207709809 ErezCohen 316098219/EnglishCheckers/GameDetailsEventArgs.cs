@@ -24,6 +24,13 @@ namespace EnglishCheckersWinUI
             m_PreviousPlayer = r_PlayerOName;
         }
 
+        public void SetPlayers(string i_CurrentPlayer)
+        {
+            m_CurrentPlayer = i_CurrentPlayer;
+            m_PreviousPlayer = i_CurrentPlayer == r_PlayerOName ? r_PlayerXName : r_PlayerOName;
+            m_CurrentPlayerSign = i_CurrentPlayer == r_PlayerOName ? Player.ePlayerSign.OSign : Player.ePlayerSign.XSign;
+        }
+
         public Board.eBoradSize BoardSize
         {
             get
@@ -46,13 +53,6 @@ namespace EnglishCheckersWinUI
             {
                 return r_PlayerXName;
             }
-        }
-
-        public void SetPlayers(string i_CurrentPlayer)
-        {
-            m_CurrentPlayer = i_CurrentPlayer;
-            m_PreviousPlayer = i_CurrentPlayer == r_PlayerOName ? r_PlayerXName : r_PlayerOName;
-            m_CurrentPlayerSign = i_CurrentPlayer == r_PlayerOName ? Player.ePlayerSign.OSign : Player.ePlayerSign.XSign;
         }
 
         public Player.ePlayerType PlayerOType

@@ -1,8 +1,8 @@
 ﻿using System;
+using EnglishCheckersLogic;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using EnglishCheckersLogic;
 
 namespace EnglishCheckersWinUI
 {
@@ -17,8 +17,8 @@ namespace EnglishCheckersWinUI
         private PictureBoxCell[,] m_PictureBoxBoard;
         private PictureBoxCell m_PictureBoxSource;
         private PictureBoxCell m_PictureBoxDestination;
-        private readonly System.Windows.Forms.Label r_LabelPlayer1Name;
-        private readonly System.Windows.Forms.Label r_LabelPlayer2Name;
+        private System.Windows.Forms.Label labelPlayer1Name;
+        private System.Windows.Forms.Label labelPlayer2Name;
         private FormGameSettings m_FormGameSettings;
         private EventGameDetailsArgs m_GameDetailsArgs;
 
@@ -30,8 +30,6 @@ namespace EnglishCheckersWinUI
 
         public FormGame()
         {
-            r_LabelPlayer1Name = new System.Windows.Forms.Label();
-            r_LabelPlayer2Name = new System.Windows.Forms.Label();
             InitializeComponent();
         }
 
@@ -118,16 +116,16 @@ namespace EnglishCheckersWinUI
         {
             if (m_GameDetailsArgs.PlayerOName == "[Computer]")
             {
-                this.r_LabelPlayer2Name.Text = string.Format("{0}: {1}", Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer), i_Player2Sccore);
+                labelPlayer2Name.Text = string.Format("{0}: {1}", Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer), i_Player2Sccore);
             }
             else
             {
-                this.r_LabelPlayer2Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerOName, i_Player2Sccore);
+                labelPlayer2Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerOName, i_Player2Sccore);
             }
 
-            this.r_LabelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, i_Player1Sccore);
-            this.r_LabelPlayer1Name.ForeColor = Color.Blue;
-            this.r_LabelPlayer2Name.ForeColor = Color.Black;
+            labelPlayer1Name.Text = string.Format("{0}: {1}", m_GameDetailsArgs.PlayerXName, i_Player1Sccore);
+            labelPlayer1Name.ForeColor = Color.Blue;
+            labelPlayer2Name.ForeColor = Color.Black;
         }
 
         private void OnGameDetailsUpdated()
@@ -199,28 +197,29 @@ namespace EnglishCheckersWinUI
                         if (isPlayer1Pawn(pawnType))
                         {
                             enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign;
-                            cellImage = pawnType == Pawn.eType.XPawn ? Reasources.BlackPawn : Reasources.BlackKingPawn;
+                            cellImage = pawnType == Pawn.eType.XPawn ? Resources.BlackPawn : Resources.BlackKingPawn;
                         }
                         else if (isPlayer2Pawn(pawnType))
                         {
                             enablePictureBox = GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.OSign;
-                            cellImage = pawnType == Pawn.eType.OPawn ? Reasources.RedPawn : Reasources.RedKingPawn;
+                            cellImage = pawnType == Pawn.eType.OPawn ? Resources.RedPawn : Resources.RedKingPawn;
                         }
                         else
                         {
                             enablePictureBox = true;
-                            cellImage = Reasources.Empty;
+                            cellImage = Resources.Empty;
                         }
                     }
                     else
                     {
                         enablePictureBox = false;
-                        cellImage = Reasources.Disabled;
+                        cellImage = Resources.Disabled;
                     }
 
                     m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePictureBox, pawnType);
                 }
             }
+
             if (GameDetailsArgs.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
             {
                 System.Threading.Thread.Sleep(k_SleepAfterMovement);
@@ -244,8 +243,8 @@ namespace EnglishCheckersWinUI
             m_GameDetailsArgs.CurrentPlayer = m_GameDetailsArgs.PreviousPlayer;
             m_GameDetailsArgs.PreviousPlayer = playerNameSaver;
             m_GameDetailsArgs.CurrentPlayerSign = m_GameDetailsArgs.CurrentPlayerSign == Player.ePlayerSign.XSign ? Player.ePlayerSign.OSign : Player.ePlayerSign.XSign;
-            this.r_LabelPlayer1Name.ForeColor = this.r_LabelPlayer1Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
-            this.r_LabelPlayer2Name.ForeColor = this.r_LabelPlayer2Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
+            labelPlayer1Name.ForeColor = labelPlayer1Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
+            labelPlayer2Name.ForeColor = labelPlayer2Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
         }
 
         private void FormGameSettings_FormClosed(object sender, FormClosedEventArgs e)
@@ -267,11 +266,6 @@ namespace EnglishCheckersWinUI
             {
                 return m_GameDetailsArgs;
             }
-        }
-
-        private void m_FormGameSettings_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
