@@ -12,7 +12,7 @@ In order to run the game you should have:
 2. Enter the name of player number 1
 3. Enter the name of player number 2 or choose to play against the computer.
 4. Let's start
-5. Habe fun!
+5. Have fun!
 
 ## Its Demo Time 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/80786728/175250695-92178674-4a8e-40bd-9e6d-54c39c00213a.gif)
