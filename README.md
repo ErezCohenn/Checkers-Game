@@ -17,4 +17,4 @@ In order to run the game you should have:
 ## Its Demo Time 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/80786728/175250695-92178674-4a8e-40bd-9e6d-54c39c00213a.gif)
 
-`made by Erez Cohen & Chen Berger`
+* made by [Erez Cohen](https://github.com/ErezCohenn) & [Chen Berger](https://github.com/chenberger)
